@@ -2,7 +2,7 @@
 # written in nearley
 # see test.up for an example of what this parses
 
-main -> line _ {% id %}
+main -> content _ {% id %}
 
 presentation -> slide |
 		slide presentation {% function(d) {
@@ -14,11 +14,11 @@ slide -> slidemarker content
 slidemarker -> "-" {% function() { return null } %}
 		| slidemarker "-" {% function() { return null } %}
 
-content -> line |
+content -> line | 
 	   content line {% function(d) { return d[0].concat([d[1]]) } %}
 
-line -> _ marker bareline |
-	_ bareline
+line -> _ marker bareline "\n" |
+	_ bareline "\n"
 
 bareline -> linecharacter {% id %}
 		| bareline linecharacter {% function(d) { return d[0]+d[1] } %}

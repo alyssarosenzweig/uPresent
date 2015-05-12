@@ -2,11 +2,11 @@
 # written in nearley
 # see test.up for an example of what this parses
 
-main -> slide _ {% id %}
+main -> presentation _ {% id %}
 
 presentation -> slide |
 		slide presentation {% function(d) {
-			return [d[0]].concat(d[1]);
+			return d[0] + d[1];
 		} %}
 
 slide -> slidemarker "\n" content {%

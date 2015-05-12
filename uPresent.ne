@@ -8,6 +8,9 @@ main -> lphrase _ presentation _ {% function(d) {
 			"<style>" +
 			(require("fs").readFileSync("style.css").toString()) +
 			"</style>" +
+			"<script>" +
+			(require("fs").readFileSync("scripts.js").toString()) +
+			"</script>" +
 			"</head><body>" +
 			d[2] +
 			"</body></html>";

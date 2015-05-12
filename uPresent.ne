@@ -17,14 +17,19 @@ slidemarker -> "-" {% function() { return null } %}
 content -> line | 
 	   content line {% function(d) { return d[0].concat([d[1]]) } %}
 
-line -> _ marker bareline "\n" |
-	_ bareline "\n"
+line -> _ marker lphrase "\n" |
+	_ lphrase "\n"
 
-bareline -> linecharacter {% id %}
-		| bareline linecharacter {% function(d) { return d[0]+d[1] } %}
-		| bareline [*#] {% function(d) { return [d0]+d[1] } %}
+italics -> "_" lphrase "_" {% function(d) { return "<i>" + d[1] + "</i>" } %}
+bold -> "**" lphrase "**" {% function(d) { return "<b>" + d[1] + "</b>" } %}
 
-linecharacter -> [A-Za-z0-9 !@$%^&()_+\-=.,<>/?'";:\|\]\[\{\}]
+lphrase -> linecharacter {% id %}
+		| lphrase linecharacter {% function(d) { return d[0]+d[1] } %}
+		| lphrase [*#] {% function(d) { return d[0]+d[1] } %}
+		| lphrase italics {% function(d) { return d[0]+d[1] } %}
+		| lphrase bold {% function(d) { return d[0]+d[1] } %}
+
+linecharacter -> [A-Za-z0-9 !@$%^&()+\-=.,<>/?'";:\|\]\[\{\}]
 marker -> "**" | "*" | "#"
 
 _ -> null {% function(){ return null } %}

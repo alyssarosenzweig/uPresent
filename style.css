@@ -1,7 +1,17 @@
+body {
+	background-color: aqua;
+}
+
 .slide {
 	font-family: Times New Roman;
-	font-size: 150%;
-	width: 100%;
-	height: 100%;
-	position: absolute;
+	font-size: 6vmin;
+	width: 100vw;
+	height: 100vh;
+	position: relative;
+
+	background-color: aqua;
+}
+
+h1 {
+	text-align: center;
 }

@@ -2,7 +2,16 @@
 # written in nearley
 # see test.up for an example of what this parses
 
-main -> presentation _ {% id %}
+main -> lphrase _ presentation _ {% function(d) {
+       		return "<!DOCTYPE html><html><head>" +
+			"<title>" + d[0] + "</title>" +
+			"<style>" +
+			(require("fs").readFileSync("style.css").toString()) +
+			"</style>" +
+			"</head><body>" +
+			d[2] +
+			"</body></html>";
+	} %}
 
 presentation -> slide {% id %} |
 		presentation slide {% function(d) {

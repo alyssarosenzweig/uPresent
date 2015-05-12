@@ -11,7 +11,7 @@ main -> lphrase _ presentation _ {% function(d) {
 			"<script>" +
 			(require("fs").readFileSync("scripts.js").toString()) +
 			"</script>" +
-			"</head><body>" +
+			"</head><body onload='load()'>" +
 			d[2] +
 			"</body></html>";
 	} %}

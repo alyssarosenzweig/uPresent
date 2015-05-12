@@ -1,5 +1,7 @@
 body {
 	background-color: aqua;
+	margin: 0;
+	padding: 0;
 }
 
 .slide {
@@ -10,6 +12,11 @@ body {
 	position: relative;
 
 	background-color: aqua;
+
+	margin-left: 5%;
+	margin-right: 5%;
+	margin-top: 0px;
+	margin-bottom: -10vh;
 }
 
 h1 {

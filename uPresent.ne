@@ -23,9 +23,9 @@ presentation -> slide {% id %} |
 
 slide -> slidemarker "\n" content _ {%
 	function(d) {
-		return "<div class='sbox'><div class='slide'>"
+		return "<div class='slide'>"
 			+ d[2]
-			+ "</div></div>"
+			+ "</div>"
 	} %}
 
 slidemarker -> "-" {% function() { return null } %}

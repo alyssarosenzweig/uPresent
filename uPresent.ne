@@ -36,11 +36,11 @@ lphrase -> linecharacter {% id %}
 
 linecharacter -> [A-Za-z0-9 !@$%^&()+\-=.,<>/?'";:\|\]\[\{\}]
 marker -> "~~" lphrase {% function(d) {
-		return "~~ " + d[1];
+		return "&#8227; " + d[1];
 	} %}
 	
 	| "~" lphrase {% function(d) {
-	       return "~ " + d[1];
+	       return "&bull; " + d[1];
 	} %}
 
 	| "#" lphrase {% function(d) {

@@ -4,7 +4,7 @@
 
 main -> presentation _ {% id %}
 
-presentation -> slide |
+presentation -> slide {% id %} |
 		slide presentation {% function(d) {
 			return d[0] + d[1];
 		} %}
@@ -36,7 +36,7 @@ lphrase -> linecharacter {% id %}
 
 linecharacter -> [A-Za-z0-9 !@$%^&()+\-=.,<>/?'";:\|\]\[\{\}]
 marker -> "~~" lphrase {% function(d) {
-		return "&#8227; " + d[1];
+		return "<span class='indent'>&nbsp; &nbsp; </span> &#8227; " + d[1];
 	} %}
 	
 	| "~" lphrase {% function(d) {

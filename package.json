@@ -1,0 +1,30 @@
+{
+  "name": "uPresent",
+  "version": "0.0.0",
+  "description": "Markdown for presentations; compiled into HTML",
+  "main": "publish.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bobbybee/uPresent.git"
+  },
+  "dependencies": {
+	  "nearley": "1.4.0"
+  },
+  "keywords": [
+    "markdown",
+    "presentation",
+    "tool",
+    "authoring",
+    "html",
+    "static",
+    "generator"
+  ],
+  "author": "Alyssa Rosenzweig",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bobbybee/uPresent/issues"
+  }
+}

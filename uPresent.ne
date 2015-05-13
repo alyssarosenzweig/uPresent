@@ -5,12 +5,8 @@
 main -> lphrase _ presentation _ {% function(d) {
        		return "<!DOCTYPE html><html><head>" +
 			"<title>" + d[0] + "</title>" +
-			"<style>" +
-			(require("fs").readFileSync("style.css").toString()) +
-			"</style>" +
-			"<script>" +
-			(require("fs").readFileSync("scripts.js").toString()) +
-			"</script>" +
+			'<link rel="stylesheet" href="style.css" type="text/css">' +
+			'<script src="scripts.js" type="text/javascript"></script>' +
 			"</head><body onload='load()'>" +
 			d[2] +
 			"</body></html>";

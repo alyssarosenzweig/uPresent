@@ -2,6 +2,8 @@
 # written in nearley
 # see test.up for an example of what this parses
 
+@{% var slideCount = 0; %}
+
 main -> lphrase _ presentation _ {% function(d) {
        		return "<!DOCTYPE html><html><head>" +
 			"<title>" + d[0] + "</title>" +
@@ -19,7 +21,13 @@ presentation -> slide {% id %} |
 
 slide -> slidemarker "\n" content _ {%
 	function(d) {
-		return "<div class='slide'>"
+		var slideNumber = slideCount++;	
+
+		return "<div class='slide' id='slide" +
+			
+			slideNumber +
+
+			"'>"
 			+ d[2]
 			+ "</div>"
 	} %}

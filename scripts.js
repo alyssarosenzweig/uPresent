@@ -12,6 +12,8 @@ function slideSwitch(e) {
 		if(number > currentSlide) {
 			// jump to slides[i]
 			window.location.hash = "#slide" + number;
+			
+			currentSlide = number;
 			break;
 		}
 	}

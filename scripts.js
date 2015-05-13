@@ -1,13 +1,22 @@
 document.addEventListener("keypress", slideSwitch);
 document.addEventListener("click", slideSwitch);
 
+var currentSlide = 0;
+
 function slideSwitch(e) {
-	e.preventDefault();
-	window.scrollBy(0, window.innerHeight)
+	if(e !== undefined) e.preventDefault();
+	
+	var slides = document.getElementsByClassName("slide");
+	for(var i = 0; i < slides.length; ++i) {
+		var number = slides[i].id.slice("slide".length) * 1;
+		if(number > currentSlide) {
+			// jump to slides[i]
+			window.location.hash = "#slide" + number;
+			break;
+		}
+	}
 }
 
 function load() {
-	setTimeout(function() {
-			window.scrollTo(0, 0);
-	}, 0);
+	slideSwitch();
 }

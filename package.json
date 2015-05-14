@@ -15,7 +15,8 @@
     "url": "https://github.com/bobbybee/uPresent.git"
   },
   "dependencies": {
-	  "nearley": "1.4.0"
+    "nearley": "1.4.0",
+    "nomnom": "^1.8.1"
   },
   "keywords": [
     "markdown",

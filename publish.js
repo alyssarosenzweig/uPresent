@@ -35,7 +35,24 @@ var input = fs.readFileSync(opts.input).toString();
 
 parser.feed(input);
 
-var output = beautify_html(parser.results[0], {
+var res = parser.results[0];
+var code = "";
+var title = res[0];
+
+res[1].forEach(function(slide, n) {
+			code += '<div class="slide" id="slide' + n + '">' + slide + '</div>';
+			});
+
+code = "<!DOCTYPE html><html><head>" +
+	"<title>" + title + "</title>" +
+	'<link rel="stylesheet" href="style.css" type="text/css">' +
+	'<script src="scripts.js" type="text/javascript"></script>' +
+	"</head><body onload='load()'>" +
+	code +
+	"</body></html>";
+	
+
+var output = beautify_html(code, {
 			
 		});
 

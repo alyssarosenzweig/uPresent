@@ -47,7 +47,7 @@ code = "<!DOCTYPE html><html><head>" +
 	"<title>" + title + "</title>" +
 	'<link rel="stylesheet" href="style.css" type="text/css">' +
 	'<script src="scripts.js" type="text/javascript"></script>' +
-	"</head><body onload='load()'>" +
+	"</head><body>" +
 	code +
 	"</body></html>";
 	

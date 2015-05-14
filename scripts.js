@@ -1,24 +1,23 @@
-document.addEventListener("keypress", slideSwitch);
-document.addEventListener("click", slideSwitch);
-
 var currentSlide = 0;
 
-function slideSwitch(e) {
-	if(e !== undefined) e.preventDefault();
-	
-	var slides = document.getElementsByClassName("slide");
-	for(var i = 0; i < slides.length; ++i) {
-		var number = slides[i].id.slice("slide".length) * 1;
-		if(number > currentSlide) {
-			// jump to slides[i]
-			window.location.hash = "#slide" + number;
-			
-			currentSlide = number;
-			break;
-		}
-	}
+function slideSwitch(num) {
+	currentSlide += num;
+	window.location.hash = "#slide"+currentSlide;
 }
 
-function load() {
-	slideSwitch();
-}
+document.addEventListener("keydown", function(e) {
+		e.preventDefault();
+
+		if(e.keyCode == 37 || e.keyCode == 38) {
+			// up / left
+			slideSwitch(-1);
+		} else {
+			slideSwitch(1);
+		}
+	});
+
+document.addEventListener("click", function() {
+		slideSwitch(1)
+	});
+
+

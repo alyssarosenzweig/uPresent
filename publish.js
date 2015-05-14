@@ -6,6 +6,8 @@
 var fs = require("fs");
 var grammar = require("./uPresent.ne.js");
 var nearley = require("nearley");
+var beautify_html = require("js-beautify").html;
+
 var parser = new nearley.Parser(grammar.ParserRules, grammar.ParserStart);
 
 var opts = require("nomnom")
@@ -33,8 +35,12 @@ var input = fs.readFileSync(opts.input).toString();
 
 parser.feed(input);
 
+var output = beautify_html(parser.results[0], {
+			
+		});
+
 if (opts.output) {
-    fs.createWriteStream(opts.output).write(parser.results[0]);
+    fs.createWriteStream(opts.output).write(output);
 } else {
-    process.stdout.write(parser.results[0]);
+    process.stdout.write(output);
 }

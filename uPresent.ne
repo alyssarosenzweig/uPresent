@@ -2,34 +2,18 @@
 # written in nearley
 # see test.up for an example of what this parses
 
-@{% var slideCount = 0; %}
-
 main -> lphrase _ presentation _ {% function(d) {
-       		return "<!DOCTYPE html><html><head>" +
-			"<title>" + d[0] + "</title>" +
-			'<link rel="stylesheet" href="style.css" type="text/css">' +
-			'<script src="scripts.js" type="text/javascript"></script>' +
-			"</head><body onload='load()'>" +
-			d[2] +
-			"</body></html>";
-	} %}
+	return [d[0], d[2]];
+} %}
 
-presentation -> slide {% id %} |
+presentation -> slide |
 		presentation slide {% function(d) {
-			return d[0] + d[1];
+			return d[0].concat([d[1]]);
 		} %}
 
 slide -> slidemarker "\n" content _ {%
 	function(d) {
-		var slideNumber = slideCount++;	
-
-		return "<div class='slide' id='slide" +
-			
-			slideNumber +
-
-			"'>"
-			+ d[2]
-			+ "</div>"
+		return d[2];
 	} %}
 
 slidemarker -> "-" {% function() { return null } %}

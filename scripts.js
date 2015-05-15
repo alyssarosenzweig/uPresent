@@ -1,8 +1,10 @@
 var currentSlide = 0;
 
 function slideSwitch(num) {
-	currentSlide += num;
-	window.location.hash = "#slide"+currentSlide;
+	if(document.getElementById("slide"+(currentSlide + num))) {
+		currentSlide += num;
+		window.location.hash = "#slide"+currentSlide;
+	} // else slide doesn't exist and there's nothing to switch to
 }
 
 document.addEventListener("keydown", function(e) {

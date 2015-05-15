@@ -38,7 +38,7 @@ slidemarker -> "-" {% function() { return null } %}
 content -> line | 
 	   content line {% function(d) { return d[0] + d[1] } %}
 
-line -> _ marker "\n" {% function(d) { return "<p>" + d[1] + "</p>" } %} |
+line -> _ marker "\n" {% function(d) { return d[1] } %} |
 	_ lphrase "\n" {% function(d) { return "<p>" + d[1] + "</p>" } %}
 
 italics -> "_" lphrase "_" {% function(d) { return "<em>" + d[1] + "</em>" } %}
@@ -64,11 +64,11 @@ pcharacter -> [ A-Za-z0-9!@#$%^&*()_+\-\=}{\[\]"':;?/>.<,]
 
 linecharacter -> [A-Za-z0-9 @$%^&()+=.,<>/?'";:\|\]\[\{\}]
 marker -> "~~" lphrase {% function(d) {
-		return "<span class='indent'>&nbsp; &nbsp; </span> &#8227; " + d[1];
+		return "<p><span class='indent'>&nbsp; &nbsp; </span> &#8227;"  + d[1] + "</p>";
 	} %}
 	
 	| "~" lphrase {% function(d) {
-	       return "&bull; " + d[1];
+	       return "<p>&bull;" + d[1] + "</p>";
 	} %}
 
 	| "#" lphrase {% function(d) {
@@ -77,7 +77,7 @@ marker -> "~~" lphrase {% function(d) {
 			"</h1>";
 		} %}
 	| image bphrase {% function(d) {
-		return d[0] + d[1];
+		return "<p>" + d[0] + d[1] + "</p>";
 	} %}
 
 pathchar -> [A-Za-z0-9:\/!@#$%^&*()_+=\-\'\.] {% id %}

@@ -39,7 +39,7 @@ content -> line |
 	   content line {% function(d) { return d[0] + d[1] } %}
 
 line -> _ marker "\n" {% function(d) { return d[1] } %} |
-	_ lphrase "\n" {% function(d) { return "<p>" + d[1] + "</p>" } %}
+	_ lphrase "\n" {% function(d) { return "<p><ul>" + d[1] + "</ul></p>" } %}
 
 italics -> "_" lphrase "_" {% function(d) { return "<em>" + d[1] + "</em>" } %}
 bold -> "**" lphrase "**" {% function(d) { return "<strong>" + d[1] + "</strong>" } %}
@@ -63,12 +63,12 @@ pphrase -> pcharacter {% id %}
 pcharacter -> [ A-Za-z0-9!@#$%^&*()_+\-\=}{\[\]"':;?/>.<,]
 
 linecharacter -> [A-Za-z0-9 @$%^&()+=.,<>/?'";:\|\]\[\{\}]
-marker -> "~~" lphrase {% function(d) {
-		return "<p><span class='indent'>&nbsp; &nbsp; </span> &#8227;"  + d[1] + "</p>";
+marker -> "~~ " lphrase {% function(d) {
+		return "<span class='indent'>&nbsp; &nbsp; </span><li class='alt'>"  + d[1] + "</li>";
 	} %}
 	
-	| "~" lphrase {% function(d) {
-	       return "<p>&bull;" + d[1] + "</p>";
+	| "~ " lphrase {% function(d) {
+	       return "<li>" + d[1] + "</li>";
 	} %}
 
 	| "#" lphrase {% function(d) {
@@ -77,7 +77,7 @@ marker -> "~~" lphrase {% function(d) {
 			"</h1>";
 		} %}
 	| image bphrase {% function(d) {
-		return "<p>" + d[0] + d[1] + "</p>";
+		return "<p><ul>" + d[0] + d[1] + "</ul></p>";
 	} %}
 
 pathchar -> [A-Za-z0-9:\/!@#$%^&*()_+=\-\'\.] {% id %}

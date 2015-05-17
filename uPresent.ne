@@ -64,7 +64,7 @@ pcharacter -> [ A-Za-z0-9!@#$%^&*()_+\-\=}{\[\]"':;?/>.<,]
 
 linecharacter -> [A-Za-z0-9 @$%^&()+=.,<>/?'";:\|\]\[\{\}]
 marker -> "~~ " lphrase {% function(d) {
-		return "<span class='indent'>&nbsp; &nbsp; </span><li class='alt'>"  + d[1] + "</li>";
+		return "<li class='alt'>"  + d[1] + "</li>";
 	} %}
 	
 	| "~ " lphrase {% function(d) {

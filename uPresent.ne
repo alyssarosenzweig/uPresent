@@ -28,7 +28,9 @@ slide -> slidemarker "\n" content _ {%
 			slideNumber +
 
 			"'>"
+			+ "<ul>"
 			+ d[2]
+			+ "</ul>"
 			+ "</div>"
 	} %}
 
@@ -39,7 +41,7 @@ content -> line |
 	   content line {% function(d) { return d[0] + d[1] } %}
 
 line -> _ marker "\n" {% function(d) { return d[1] } %} |
-	_ lphrase "\n" {% function(d) { return "<p><ul>" + d[1] + "</ul></p>" } %}
+	_ lphrase "\n" {% function(d) { return "<p>" + d[1] + "</p>" } %}
 
 italics -> "_" lphrase "_" {% function(d) { return "<em>" + d[1] + "</em>" } %}
 bold -> "**" lphrase "**" {% function(d) { return "<strong>" + d[1] + "</strong>" } %}

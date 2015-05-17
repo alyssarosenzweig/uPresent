@@ -77,7 +77,7 @@ marker -> "~~ " lphrase {% function(d) {
 			"</h1>";
 		} %}
 	| image bphrase {% function(d) {
-		return "<p><ul>" + d[0] + d[1] + "</ul></p>";
+		return "<p>" + d[0] + d[1] + </p>";
 	} %}
 
 pathchar -> [A-Za-z0-9:\/!@#$%^&*()_+=\-\'\.] {% id %}

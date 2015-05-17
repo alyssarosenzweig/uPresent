@@ -22,3 +22,13 @@ body {
 h1 {
 	text-align: center;
 }
+
+li {
+	list-style-type: disc;
+}
+
+li.alt {
+	position: relative;
+	left: 5%;
+	list-style-type: circle;
+}

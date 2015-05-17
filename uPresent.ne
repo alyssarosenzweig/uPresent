@@ -41,7 +41,8 @@ content -> line |
 	   content line {% function(d) { return d[0] + d[1] } %}
 
 line -> _ marker "\n" {% function(d) { return d[1] } %} |
-	_ lphrase "\n" {% function(d) { return "<p>" + d[1] + "</p>" } %}
+	_ lphrase "\n" {% function(d) { return "<p>" + d[1] + "</p>" } %} |
+	_ list "\n" {% function(d) { return "<p>" + d[1] + "</p>" } %}
 
 italics -> "_" lphrase "_" {% function(d) { return "<em>" + d[1] + "</em>" } %}
 bold -> "**" lphrase "**" {% function(d) { return "<strong>" + d[1] + "</strong>" } %}
@@ -65,15 +66,7 @@ pphrase -> pcharacter {% id %}
 pcharacter -> [ A-Za-z0-9!@#$%^&*()_+\-\=}{\[\]"':;?/>.<,]
 
 linecharacter -> [A-Za-z0-9 @$%^&()+=.,<>/?'";:\|\]\[\{\}]
-marker -> "~~ " lphrase {% function(d) {
-		return "<li class='alt'>"  + d[1] + "</li>";
-	} %}
-	
-	| "~ " lphrase {% function(d) {
-	       return "<li>" + d[1] + "</li>";
-	} %}
-
-	| "#" lphrase {% function(d) {
+marker -> "#" lphrase {% function(d) {
 		return "<h1>" +
 			d[1] +
 			"</h1>";
@@ -85,6 +78,16 @@ marker -> "~~ " lphrase {% function(d) {
 pathchar -> [A-Za-z0-9:\/!@#$%^&*()_+=\-\'\.] {% id %}
 path ->   pathchar {% id %}
 	| path pathchar {% function(d) { return d[0]+d[1] } %}
+
+listnode -> "~ " lphrase {% function(d) {
+		return "<li>" + d[1] + "</li>";
+	} %}
+	| "~~ " lphrase {% function(d) {
+		return "<li class='alt'>" + d[1] + "</li>"
+	} %}
+
+list -> listnode {% id %} |
+	list listnode {% function(d) { return d[0]+d[1] } %}
 
 _ -> null {% function(){ return null } %}
 	| [\s] _ {% function() { return null } %}

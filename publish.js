@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 /*
  * frontend to the nearley grammar powering uPresent
  * depends on nearley from npm, obviously

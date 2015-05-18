@@ -13,7 +13,7 @@ presentation -> slide |
 
 slide -> slidemarker "\n" content _ {%
 	function(d) {
-		return "<ul>"+d[2]+"</ul>"
+		return d[2]
 	} %}
 
 slidemarker -> "-" {% function() { return null } %}
@@ -24,7 +24,7 @@ content -> line |
 
 line -> _ marker "\n" {% function(d) { return d[1] } %} |
 	_ lphrase "\n" {% function(d) { return "<p>" + d[1] + "</p>" } %} |
-	_ list "\n" {% function(d) { return "<p>" + d[1] + "</p>" } %}
+	_ list "\n" {% function(d) { return "<ul>"+d[1]+"</ul>" } %}
 
 italics -> "_" lphrase "_" {% function(d) { return "<em>" + d[1] + "</em>" } %}
 bold -> "**" lphrase "**" {% function(d) { return "<strong>" + d[1] + "</strong>" } %}
@@ -61,11 +61,11 @@ pathchar -> [A-Za-z0-9:\/!@#$%^&*()_+=\-\'\.] {% id %}
 path ->   pathchar {% id %}
 	| path pathchar {% function(d) { return d[0]+d[1] } %}
 
-listnode -> "~ " lphrase {% function(d) {
+listnode -> "~ " lphrase _ {% function(d) {
 		return "<li>" + d[1] + "</li>";
 	} %}
-	| "~~ " lphrase {% function(d) {
-		return "<li class='alt'>" + d[1] + "</li>"
+	| _ "~~ " lphrase _ {% function(d) {
+		return "<li class='alt'>" + d[2] + "</li>"
 	} %}
 
 list -> listnode {% id %} |

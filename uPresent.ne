@@ -38,6 +38,7 @@ lphrase -> linecharacter {% id %}
 		| lphrase image {% function(d) { return d[0]+d[1] } %}
 		| lphrase [\-] {% function(d) { return d[0]+d[1] } %}
 		| lphrase [!] [^\[] {% function(d) { return d[0]+d[1]+d[2] } %}
+		| lphrase "[" {% function(d) { return d[0]+d[1] } %}
 
 bphrase -> lphrase {% id %}
 	| _ {% function() { return "" } %}
@@ -47,7 +48,7 @@ pphrase -> pcharacter {% id %}
  
 pcharacter -> [ A-Za-z0-9!@#$%^&*()_+\-\=}{\[\]"':;?/>.<,]
 
-linecharacter -> [A-Za-z0-9 @$%^&()+=.,<>/?'";:\|\]\[\{\}]
+linecharacter -> [A-Za-z0-9 @$%^&()+=.,<>/?'";:\|\]\{\}]
 marker -> "#" lphrase {% function(d) {
 		return "<h1>" +
 			d[1] +
@@ -55,6 +56,12 @@ marker -> "#" lphrase {% function(d) {
 		} %}
 	| image bphrase {% function(d) {
 		return "<p>" + d[0] + d[1] + "</p>";
+	} %}
+	| "[hanging] " lphrase {% function(d) {
+		return "<div class='hanging'>" + d[1] + "</div>";
+	} %}
+	| "[linebreak]" {% function(d) {
+		return "<br/>";
 	} %}
 
 pathchar -> [A-Za-z0-9:\/!@#$%^&*()_+=\-\'\.] {% id %}

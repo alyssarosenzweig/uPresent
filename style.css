@@ -70,3 +70,8 @@ img {
     max-height: 60%;
     min-height: 60%;
 }
+
+div.hanging {
+	padding-left: 1.5em;
+	text-indent: -1.5em;
+}

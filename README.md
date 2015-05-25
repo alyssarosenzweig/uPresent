@@ -14,6 +14,8 @@ uPresent follows standard UNIX philosophy for compiling:
 
  where presentation.up is the markdown file and presentation.html is the output file. `-o presentation.html` can be omitted to print to the console.
 
+To install, at the moment type `npm install` in the working directory after cloning the repository and installing node.js and npm.
+
 Syntax
 ============
 The first line of a uPresent presentation is the name of the presentation, always.

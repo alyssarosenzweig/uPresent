@@ -61,10 +61,10 @@ pathchar -> [A-Za-z0-9:\/!@#$%^&*()_+=\-\'\.] {% id %}
 path ->   pathchar {% id %}
 	| path pathchar {% function(d) { return d[0]+d[1] } %}
 
-listnode -> "~ " lphrase _ {% function(d) {
+listnode -> "~ " lphrase "\n" {% function(d) {
 		return "<li>" + d[1] + "</li>";
 	} %}
-	| _ "~~ " lphrase _ {% function(d) {
+	| _ "~~ " lphrase "\n" {% function(d) {
 		return "<li class='alt'>" + d[2] + "</li>"
 	} %}
 

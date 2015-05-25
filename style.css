@@ -54,6 +54,14 @@ li:before {
     width: 1.5em;
 }
 
+li.alt {
+    margin-left: 1.5em;
+}
+
+li.alt:before {
+   content: "\2053";
+}
+
 img {
     display: block;
     margin-left: auto;

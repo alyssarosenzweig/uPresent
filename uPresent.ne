@@ -2,7 +2,7 @@
 # written in nearley
 # see test.up for an example of what this parses
 
-main -> lphrase _ presentation _ {% function(d) {
+main -> pphrase _ presentation _ {% function(d) {
 	return [d[0], d[2]];
 } %}
 
@@ -24,20 +24,43 @@ content -> line |
 
 line -> _ marker "\n" {% function(d) { return d[1] } %} |
 	_ lphrase "\n" {% function(d) { return "<p>" + d[1] + "</p>" } %} |
-	_ list "\n" {% function(d) { return "<ul>"+d[1]+"</ul>" } %}
+	_ list "\n" "\n" {% function(d) { return "<ul>"+d[1]+"</ul>" } %}
 
 italics -> "_" lphrase "_" {% function(d) { return "<em>" + d[1] + "</em>" } %}
 bold -> "**" lphrase "**" {% function(d) { return "<strong>" + d[1] + "</strong>" } %}
 image -> "![" pphrase "](" path ")" {% function(d) { return '<img alt="' + d[1] + '" src="' + d[3] + '" />' } %}
 
-lphrase -> linecharacter {% id %}
-		| lphrase linecharacter {% function(d) { return d[0]+d[1] } %}
-		| lphrase [#] {% function(d) { return d[0]+d[1] } %}
+linkprotocol -> "http" | "https"
+domain -> [A-Za-z\.]:+ {% function(d) { return d[0].join(""); } %}
+rawlink -> linkprotocol "://" domain {% function(d) {
+			return "<a href='" + d[0] + d[1] + d[2] + "'>" + d[0] + d[1] + d[2] + "</a>";
+		} %}
+	| linkprotocol "://" domain "/" [^ \n]:+ {% function(d) {
+			return "<a href='" + d[0] + d[1] + d[2] + d[3] + d[4].join("") + "'>" + d[0] + d[1] + d[2] + d[3] + d[4].join("") + "</a>";
+		} %}
+
+ln -> nophrase linecharacter:+ {% 
+			function(d, blah, fail) {
+				d[1] = d[1].join("");
+			       	if(d[1].indexOf("http://") > -1 || d[1].indexOf("https://") > -1) { 
+					return fail;
+			       	}
+			       	return d[0]+d[1]
+		       	}
+		   %}
+		
+lphrase -> ln {% id %}
+	|  nphrase {% id %}
+
+nophrase -> nphrase {% id %} | _ {% function() { return "" } %}
+
+nphrase -> lphrase [#] {% function(d) { return d[0]+d[1] } %}
 		| lphrase italics {% function(d) { return d[0]+d[1] } %}
 		| lphrase bold {% function(d) { return d[0]+d[1] } %}
 		| lphrase image {% function(d) { return d[0]+d[1] } %}
 		| lphrase [\-] {% function(d) { return d[0]+d[1] } %}
 		| lphrase [!] [^\[] {% function(d) { return d[0]+d[1]+d[2] } %}
+		| bphrase rawlink {% function(d) { return d[0]+d[1] } %}
 
 bphrase -> lphrase {% id %}
 	| _ {% function() { return "" } %}
@@ -48,7 +71,7 @@ pphrase -> pcharacter {% id %}
 pcharacter -> [ A-Za-z0-9!@#$%^&*()_+\-\=}{\[\]"':;?/>.<,]
 
 linecharacter -> [A-Za-z0-9 @$%^&()+=.,<>/?'";:\|\]\[\{\}]
-marker -> "#" lphrase {% function(d) {
+marker -> "# " lphrase "\n" {% function(d) {
 		return "<h1>" +
 			d[1] +
 			"</h1>";
@@ -61,10 +84,10 @@ pathchar -> [A-Za-z0-9:\/!@#$%^&*()_+=\-\'\.] {% id %}
 path ->   pathchar {% id %}
 	| path pathchar {% function(d) { return d[0]+d[1] } %}
 
-listnode -> "~ " lphrase _ {% function(d) {
-		return "<li>" + d[1] + "</li>";
+listnode -> _ "~ " lphrase {% function(d) {
+		return "<li>" + d[2] + "</li>";
 	} %}
-	| _ "~~ " lphrase _ {% function(d) {
+	| _ "~~ " lphrase {% function(d) {
 		return "<li class='alt'>" + d[2] + "</li>"
 	} %}
 

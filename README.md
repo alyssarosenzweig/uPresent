@@ -1,6 +1,8 @@
 uPresent
 =============
 
+[![Join the chat at https://gitter.im/bobbybee/uPresent](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/bobbybee/uPresent?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 uPresent, pronounced "micro present", is a markdown flavor for writing presentations; uPresent presentations are written in a concise, intuitive syntax and are compiled into beautiful, lightweight HTML.
 
 uPresent compiles [this](https://github.com/bobbybee/uPresent/blob/master/test.up) to [this](http://backtick.town/~alyssa/test.html#slide0).

@@ -11,6 +11,8 @@ body {
     font-family: Lato;
 	margin: 0;
 	padding: 0;
+    cursor: none;
+    overflow: hidden;
 }
 
 .slide {

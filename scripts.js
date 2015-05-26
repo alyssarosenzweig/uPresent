@@ -32,6 +32,16 @@ window.addEventListener("load", function(e) {
             slideSwitch(-1);
 	} else if(e.keyCode == 190) { // blank slide
 		makeBlankSlide(true);
+	} else if(e.keyCode == 116 || e.keyCode == 27) { // fullscreen --- start presentation button on my clicker
+	
+		var elem = document.documentElement;
+
+		if(elem.requestFullScreen) elem.requestFullScreen();
+		else if(elem.webkitRequestFullScreen) {
+			elem.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+		} else if(elem.mozRequestFullScreen) {
+			elem.mozRequestFullScreen();
+		}
 	} else {
 		makeBlankSlide(false);
             slideSwitch(1);

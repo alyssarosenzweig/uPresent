@@ -27,11 +27,23 @@ window.addEventListener("load", function(e) {
         e.preventDefault();
         console.log(e.keyCode);
 	
+	if(e.keyCode == 17) return; // ctrl-key
+
 	if(e.keyCode === 37 || e.keyCode === 33 || e.keyCode === 38 || e.keyCode === 8) {
 	    makeBlankSlide(false);
             slideSwitch(-1);
 	} else if(e.keyCode == 190) { // blank slide
 		makeBlankSlide(true);
+	} else if(e.keyCode == 116 || e.keyCode == 27 || (e.keyCode == 70 && (e.ctrlKey || e.metaKey))) { // fullscreen --- start presentation button on my clicker
+	
+		var elem = document.documentElement;
+
+		if(elem.requestFullScreen) elem.requestFullScreen();
+		else if(elem.webkitRequestFullScreen) {
+			elem.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+		} else if(elem.mozRequestFullScreen) {
+			elem.mozRequestFullScreen();
+		}
 	} else {
 		makeBlankSlide(false);
             slideSwitch(1);

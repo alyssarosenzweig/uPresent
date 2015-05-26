@@ -18,7 +18,8 @@
   "dependencies": {
     "nearley": "1.4.0",
     "nomnom": "^1.8.1",
-    "js-beautify": "^1.5.5"
+    "js-beautify": "^1.5.5",
+    "html-minifier": "^0.7.2"
   },
   "keywords": [
     "markdown",

@@ -24,7 +24,7 @@ content -> line |
 
 line -> _ marker "\n" {% function(d) { return d[1] } %} |
 	_ lphrase "\n" {% function(d) { return "<p>" + d[1] + "</p>" } %} |
-	_ list "\n" "\n" {% function(d) { return "<ul>"+d[1]+"</ul>" } %}
+	_ list "\n" {% function(d) { return "<ul>"+d[1]+"</ul>" } %}
 
 italics -> "_" lphrase "_" {% function(d) { return "<em>" + d[1] + "</em>" } %}
 bold -> "**" lphrase "**" {% function(d) { return "<strong>" + d[1] + "</strong>" } %}

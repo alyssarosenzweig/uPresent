@@ -51,7 +51,7 @@ window.addEventListener("load", function(e) {
     });
 
     document.addEventListener("click", function(e) {
-	e.preventDefault();
+	//e.preventDefault();
 
 	// switch differently based on which button is pressed
 

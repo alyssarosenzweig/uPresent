@@ -27,6 +27,8 @@ window.addEventListener("load", function(e) {
         e.preventDefault();
         console.log(e.keyCode);
 	
+	if(e.keyCode == 17) return; // ctrl-key
+
 	if(e.keyCode === 37 || e.keyCode === 33 || e.keyCode === 38 || e.keyCode === 8) {
 	    makeBlankSlide(false);
             slideSwitch(-1);

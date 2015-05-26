@@ -61,6 +61,7 @@ nphrase -> lphrase [#] {% function(d) { return d[0]+d[1] } %}
 		| lphrase [\-] {% function(d) { return d[0]+d[1] } %}
 		| lphrase [!] [^\[] {% function(d) { return d[0]+d[1]+d[2] } %}
 		| bphrase rawlink {% function(d) { return d[0]+d[1] } %}
+		| lphrase "[" {% function(d) { return d[0]+d[1] } %}
 
 bphrase -> lphrase {% id %}
 	| _ {% function() { return "" } %}
@@ -70,8 +71,8 @@ pphrase -> pcharacter {% id %}
  
 pcharacter -> [ A-Za-z0-9!@#$%^&*()_+\-\=}{\[\]"':;?/>.<,]
 
-linecharacter -> [A-Za-z0-9 @$%^&()+=.,<>/?'";:\|\]\[\{\}]
-marker -> "# " lphrase "\n" {% function(d) {
+linecharacter -> [A-Za-z0-9 @$%^&()+=.,<>/?'";:\|\]\{\}]
+marker -> "#" lphrase "\n" {% function(d) {
 		return "<h1>" +
 			d[1] +
 			"</h1>";
@@ -79,15 +80,21 @@ marker -> "# " lphrase "\n" {% function(d) {
 	| image bphrase {% function(d) {
 		return "<p>" + d[0] + d[1] + "</p>";
 	} %}
+	| "[hanging] " lphrase {% function(d) {
+		return "<div class='hanging'>" + d[1] + "</div>";
+	} %}
+	| "[linebreak]" {% function(d) {
+		return "<br/>";
+	} %}
 
 pathchar -> [A-Za-z0-9:\/!@#$%^&*()_+=\-\'\.] {% id %}
 path ->   pathchar {% id %}
 	| path pathchar {% function(d) { return d[0]+d[1] } %}
 
-listnode -> _ "~ " lphrase {% function(d) {
-		return "<li>" + d[2] + "</li>";
+listnode -> "~ " lphrase "\n" {% function(d) {
+		return "<li>" + d[1] + "</li>";
 	} %}
-	| _ "~~ " lphrase {% function(d) {
+	| _ "~~ " lphrase "\n" {% function(d) {
 		return "<li class='alt'>" + d[2] + "</li>"
 	} %}
 

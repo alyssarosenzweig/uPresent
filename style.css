@@ -11,6 +11,8 @@ body {
     font-family: Lato;
 	margin: 0;
 	padding: 0;
+    cursor: none;
+    overflow: hidden;
 }
 
 .slide {
@@ -54,6 +56,14 @@ li:before {
     width: 1.5em;
 }
 
+li.alt {
+    margin-left: 1.5em;
+}
+
+li.alt:before {
+   content: "\2053";
+}
+
 img {
     display: block;
     margin-left: auto;
@@ -61,4 +71,9 @@ img {
     max-width: 100%;
     max-height: 60%;
     min-height: 60%;
+}
+
+div.hanging {
+	padding-left: 1.5em;
+	text-indent: -1.5em;
 }

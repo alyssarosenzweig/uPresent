@@ -39,6 +39,8 @@ rawlink -> linkprotocol "://" domain {% function(d) {
 			return "<a href='" + d[0] + d[1] + d[2] + d[3] + d[4].join("") + "'>" + d[0] + d[1] + d[2] + d[3] + d[4].join("") + "</a>";
 		} %}
 
+namelink -> "[" pphrase "](" path ")" {% function(d) { return '<a href="' + d[3] + '">' + d[1] + "</a>"; } %}
+
 ln -> nophrase linecharacter:+ {% 
 			function(d, blah, fail) {
 				d[1] = d[1].join("");
@@ -61,6 +63,7 @@ nphrase -> lphrase [#] {% function(d) { return d[0]+d[1] } %}
 		| lphrase [\-] {% function(d) { return d[0]+d[1] } %}
 		| lphrase [!] [^\[] {% function(d) { return d[0]+d[1]+d[2] } %}
 		| bphrase rawlink {% function(d) { return d[0]+d[1] } %}
+		| bphrase namelink {% function(d) { return d[0]+d[1] } %}
 		| lphrase "[" {% function(d) { return d[0]+d[1] } %}
 
 bphrase -> lphrase {% id %}

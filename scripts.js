@@ -32,7 +32,7 @@ window.addEventListener("load", function(e) {
             slideSwitch(-1);
 	} else if(e.keyCode == 190) { // blank slide
 		makeBlankSlide(true);
-	} else if(e.keyCode == 116 || e.keyCode == 27) { // fullscreen --- start presentation button on my clicker
+	} else if(e.keyCode == 116 || e.keyCode == 27 || (e.keyCode == 70 && (e.ctrlKey || e.metaKey))) { // fullscreen --- start presentation button on my clicker
 	
 		var elem = document.documentElement;
 

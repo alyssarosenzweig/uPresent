@@ -9,6 +9,7 @@ var fs = require("fs");
 var grammar = require("./uPresent.ne.js");
 var nearley = require("nearley");
 var beautify_html = require("js-beautify").html;
+var minify = require("html-minifier").minify;
 
 var parser = new nearley.Parser(grammar.ParserRules, grammar.ParserStart);
 
@@ -23,6 +24,11 @@ var opts = require("nomnom")
         "abbr": "o",
         "help": "An output html file (if not provided, write to stdout)"
     })
+    .option("minify", {
+	"abbr": "m",
+	"help": "Embeds CSS and JS into the output file and minifies the output for optimal performace",
+	"flag": true 
+    })
     .option('version', {
         abbr: 'v',
         flag: true,
@@ -32,6 +38,9 @@ var opts = require("nomnom")
         }
     })
     .parse();
+
+var cssFile = "style.css",
+    jsFile = "scripts.js";
 
 var input = fs.readFileSync(opts.input).toString();
 
@@ -45,18 +54,37 @@ res[1].forEach(function(slide, n) {
 			code += '<div class="slide" id="slide' + n + '">' + slide + '</div>';
 			});
 
+var body = code;
+
 code = "<!DOCTYPE html><html><head>" +
-	"<title>" + title + "</title>" +
-	'<link rel="stylesheet" href="style.css" type="text/css">' +
-	'<script src="scripts.js" type="text/javascript"></script>' +
-	"</head><body>" +
-	code +
+	"<title>" + title + "</title>";
+
+if(opts.minify) {
+	code += "<style>" + fs.readFileSync(cssFile) + "</style>" +
+		"<script>" + fs.readFileSync(jsFile) + "</script>";
+} else {
+	code +=  '<link rel="stylesheet" href="' + cssFile + '" type="text/css">' +
+		 '<script src="' + jsFile + '" type="text/javascript"></script>';
+}
+
+code += "</head><body>" +
+	body +
 	"</body></html>";
 	
 
-var output = beautify_html(code, {
-			
-		});
+
+// depending on the user options, either minify (production) or beautify (development)
+
+if(opts.minify) {
+	var output = minify(code, {
+		minifyJS: true,
+		minifyCSS: true
+	});
+} else {
+	var output = beautify_html(code, {});
+}
+
+// write it out to a file / stdout
 
 if (opts.output) {
     fs.createWriteStream(opts.output).write(output);

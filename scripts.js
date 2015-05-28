@@ -1,8 +1,46 @@
 window.addEventListener("load", function(e) {
     var currentSlide = 0;
     var blankSlide = false;
+    var actualSlide = null;
+    var listIndex = -1;
 
     function slideSwitch(num) {
+	actualSlide = document.getElementById("slide"+currentSlide);
+
+	var i = 0,
+	    tempListIndex = 0;
+
+	listIndex++;
+
+	while( (i < actualSlide.children.length) && (i >= 0) ) {
+		if(actualSlide.children[i].tagName == "UL") {
+			var ul = actualSlide.children[i];
+
+			for(var j = 0; j < ul.children.length; ++j) {
+				if(listIndex == tempListIndex + 1) {
+					ul.children[j].style.color = 'red'; // TODO: visibility controls
+					break;
+				}
+
+				++tempListIndex;
+			}
+		}
+
+		if(tempListIndex == listIndex) {
+			break;
+		}
+
+		++i;
+	}
+
+	if(listIndex < 3 + 1) {
+		// don't switch the slide yet
+		console.log(listIndex);
+		return;
+	}
+
+	listIndex = 0;
+    
         if (document.getElementById("slide"+(currentSlide + num))) {
             currentSlide += num;
         } // else slide doesn't exist and there's nothing to switch to
@@ -45,7 +83,7 @@ window.addEventListener("load", function(e) {
 			elem.mozRequestFullScreen();
 		}
 	} else {
-		makeBlankSlide(false);
+	    makeBlankSlide(false);
             slideSwitch(1);
         }
     });

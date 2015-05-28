@@ -2,7 +2,7 @@ window.addEventListener("load", function(e) {
     var currentSlide = 0;
     var blankSlide = false;
     var actualSlide = null;
-    var listIndex = -1;
+    var listIndex = 0;
 
     function slideSwitch(num) {
 	actualSlide = document.getElementById("slide"+currentSlide);
@@ -10,7 +10,7 @@ window.addEventListener("load", function(e) {
 	var i = 0,
 	    tempListIndex = 0;
 
-	listIndex++;
+	listIndex += num; // works in the correct direction
 
 	while( (i < actualSlide.children.length) && (i >= 0) ) {
 		if(actualSlide.children[i].tagName == "UL") {
@@ -18,7 +18,7 @@ window.addEventListener("load", function(e) {
 
 			for(var j = 0; j < ul.children.length; ++j) {
 				if(listIndex == tempListIndex + 1) {
-					ul.children[j].style.color = 'red'; // TODO: visibility controls
+					ul.children[j].style.visibility = (ul.children[j].style.visibility != 'visible') ? 'visible' : 'hidden';
 					break;
 				}
 
@@ -36,7 +36,7 @@ window.addEventListener("load", function(e) {
 	if(listIndex < 3 + 1) {
 		// don't switch the slide yet
 		console.log(listIndex);
-		return;
+		if(!(listIndex < 0)) return;
 	}
 
 	listIndex = 0;

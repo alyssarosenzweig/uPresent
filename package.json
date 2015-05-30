@@ -31,6 +31,9 @@
     "generator"
   ],
   "author": "Alyssa Rosenzweig",
+  "contributors": [{
+      "name": "`hardmath123`"
+  }],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/bobbybee/uPresent/issues"

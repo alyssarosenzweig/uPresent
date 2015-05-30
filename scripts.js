@@ -108,8 +108,10 @@ window.addEventListener("load", function() {
 	document.addEventListener("click", onClick);
 
 	if (window.addEventListener) {
-	  window.addEventListener('DOMMouseScroll', wheel, false);
+	  window.addEventListener('DOMMouseScroll', onWheel, false);
 	}
 
-	window.onmousewheel = document.onmousewheel = wheel;
+	window.onmousewheel = document.onmousewheel = onWheel;
+
+	window.location.hash = "#slide0";  // prevents some weird bugs
 });

@@ -1,10 +1,10 @@
 window.addEventListener("load", function(e) {
-    var currentSlide = 0;
-    var blankSlide = false;
-    var actualSlide = null;
-    var listIndex = -1;
+	var currentSlide = 0;
+	var blankSlide = false;
+	var actualSlide = null;
+	var listIndex = -1;
 
-    function getBulletPointCount(slideNum) {
+	function getBulletPointCount(slideNum) {
 	var slide = document.getElementById("slide" + slideNum);
 
 	var count = 0;
@@ -16,9 +16,9 @@ window.addEventListener("load", function(e) {
 	}
 
 	return count;
-    }
+	}
 
-    function slideSwitch(num) {
+	function slideSwitch(num) {
 	actualSlide = document.getElementById("slide"+currentSlide);
 	var slide = actualSlide;
 
@@ -49,35 +49,35 @@ window.addEventListener("load", function(e) {
 			listIndex = getBulletPointCount(currentSlide - 1) - 1;
 	}
 
-        if (document.getElementById("slide"+(currentSlide + num))) {
-            currentSlide += num;
-        } // else slide doesn't exist and there's nothing to switch to
-        window.location.hash = "#slide"+currentSlide;
-    }
+		if (document.getElementById("slide"+(currentSlide + num))) {
+			currentSlide += num;
+		} // else slide doesn't exist and there's nothing to switch to
+		window.location.hash = "#slide"+currentSlide;
+	}
 
-    function makeBlankSlide(actuallyBlank) {
-	    var slide = document.getElementById("slide"+(currentSlide));
-	    
-	    if(!blankSlide) {
-	    	if(actuallyBlank) {
+	function makeBlankSlide(actuallyBlank) {
+		var slide = document.getElementById("slide"+(currentSlide));
+		
+		if(!blankSlide) {
+			if(actuallyBlank) {
 	   		slide.style.visibility = 'hidden';
 			blankSlide = true;
 		}
-	    } else {
-	    	slide.style.visibility = 'visible';
-	    	blankSlide = false;
-	    }
-    }
+		} else {
+			slide.style.visibility = 'visible';
+			blankSlide = false;
+		}
+	}
 
-    document.addEventListener("keydown", function(e) {
-        e.preventDefault();
-        console.log(e.keyCode);
+	document.addEventListener("keydown", function(e) {
+		e.preventDefault();
+		console.log(e.keyCode);
 	
 	if(e.keyCode == 17) return; // ctrl-key
 
 	if(e.keyCode === 37 || e.keyCode === 33 || e.keyCode === 38 || e.keyCode === 8) {
-	    makeBlankSlide(false);
-            slideSwitch(-1);
+		makeBlankSlide(false);
+			slideSwitch(-1);
 	} else if(e.keyCode == 190) { // blank slide
 		makeBlankSlide(true);
 	} else if(e.keyCode == 116 || e.keyCode == 27 || (e.keyCode == 70 && (e.ctrlKey || e.metaKey))) { // fullscreen --- start presentation button on my clicker
@@ -91,12 +91,12 @@ window.addEventListener("load", function(e) {
 			elem.mozRequestFullScreen();
 		}
 	} else {
-	    makeBlankSlide(false);
-            slideSwitch(1);
-        }
-    });
+		makeBlankSlide(false);
+			slideSwitch(1);
+		}
+	});
 
-    document.addEventListener("click", function(e) {
+	document.addEventListener("click", function(e) {
 	//e.preventDefault();
 
 	// switch differently based on which button is pressed
@@ -106,18 +106,18 @@ window.addEventListener("load", function(e) {
 	} else {
 		slideSwitch(-1);
 	}
-    });
+	});
 
-    function wheel(e) {
-    	 e.preventDefault();
-    }
+	function wheel(e) {
+		 e.preventDefault();
+	}
    
-    if (window.addEventListener) {
-      window.addEventListener('DOMMouseScroll', wheel, false);
-    }
-    window.onmousewheel = document.onmousewheel = wheel;
+	if (window.addEventListener) {
+	  window.addEventListener('DOMMouseScroll', wheel, false);
+	}
+	window.onmousewheel = document.onmousewheel = wheel;
 
 
-    //slideSwitch(0);
+	//slideSwitch(0);
 });
 

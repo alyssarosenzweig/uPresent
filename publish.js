@@ -14,33 +14,33 @@ var minify = require("html-minifier").minify;
 var parser = new nearley.Parser(grammar.ParserRules, grammar.ParserStart);
 
 var opts = require("nomnom")
-    .script("up")
-    .option("input", {
-        "position": 0,
-        "required": true,
-        "help": "An input Markdown file"
-    })
-    .option("output", {
-        "abbr": "o",
-        "help": "An output html file (if not provided, write to stdout)"
-    })
-    .option("minify", {
+	.script("up")
+	.option("input", {
+		"position": 0,
+		"required": true,
+		"help": "An input Markdown file"
+	})
+	.option("output", {
+		"abbr": "o",
+		"help": "An output html file (if not provided, write to stdout)"
+	})
+	.option("minify", {
 	"abbr": "m",
 	"help": "Embeds CSS and JS into the output file and minifies the output for optimal performace",
 	"flag": true 
-    })
-    .option('version', {
-        abbr: 'v',
-        flag: true,
-        help: "Print version and exit",
-        callback: function() {
-            return require('../package.json').version;
-        }
-    })
-    .parse();
+	})
+	.option('version', {
+		abbr: 'v',
+		flag: true,
+		help: "Print version and exit",
+		callback: function() {
+			return require('../package.json').version;
+		}
+	})
+	.parse();
 
 var cssFile = "style.css",
-    jsFile = "scripts.js";
+	jsFile = "scripts.js";
 
 var input = fs.readFileSync(opts.input).toString();
 
@@ -113,7 +113,7 @@ if(opts.minify) {
 // write it out to a file / stdout
 
 if (opts.output) {
-    fs.createWriteStream(opts.output).write(output);
+	fs.createWriteStream(opts.output).write(output);
 } else {
-    process.stdout.write(output);
+	process.stdout.write(output);
 }

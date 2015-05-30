@@ -1,53 +1,53 @@
 @import url(http://fonts.googleapis.com/css?family=Lato:300,300italic);
 
 * {
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
 }
 
 body {
-    background-color: #011;
-    font-family: Lato;
+	background-color: #011;
+	font-family: Lato;
 	margin: 0;
 	padding: 0;
-    cursor: none;
-    overflow: hidden;
+	cursor: none;
+	overflow: hidden;
 }
 
 .slide {
-    color: #eee;
+	color: #eee;
 
 	font-size: 5vmin;
 	width: 100vw;
 	height: 100vh;
 	position: relative;
-    margin: 0;
-    padding-top: 2em;
-    padding-bottom: 2em;
-    padding-left: 2em;
-    padding-right: 1em;
+	margin: 0;
+	padding-top: 2em;
+	padding-bottom: 2em;
+	padding-left: 2em;
+	padding-right: 1em;
 }
 
 .slide p {
-    text-align: center;
+	text-align: center;
 }
 
 .slide:first-child h1 {
-    text-align: center;
+	text-align: center;
 }
 
 h1 {
-    margin: 0;
-    padding: 0;
-    font-size: 1.4em;
-    font-weight: lighter;
+	margin: 0;
+	padding: 0;
+	font-size: 1.4em;
+	font-weight: lighter;
 }
 
 li {
-    list-style: none;
-    line-height: 1.3em;
-    margin-bottom: 0.3em;
+	list-style: none;
+	line-height: 1.3em;
+	margin-bottom: 0.3em;
 }
 
 div.transbullets > ul > li {
@@ -55,14 +55,14 @@ div.transbullets > ul > li {
 }
 
 li:before {
-    display: inline-block;
-    content: "\2014";
-    margin-left: -1.5em;
-    width: 1.5em;
+	display: inline-block;
+	content: "\2014";
+	margin-left: -1.5em;
+	width: 1.5em;
 }
 
 li.alt {
-    margin-left: 1.5em;
+	margin-left: 1.5em;
 }
 
 li.alt:before {
@@ -70,15 +70,15 @@ li.alt:before {
 }
 
 img {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 100%;
-    max-height: 60%;
-    min-height: 60%;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 100%;
+	max-height: 60%;
+	min-height: 60%;
 }
 
-div.hanging {
+div.hanging 
 	padding-left: 1.5em;
 	text-indent: -1.5em;
 }

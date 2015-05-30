@@ -31,16 +31,17 @@ function publish(input, shouldMinify, useFS) {
 		// parse options
 		
 		res[0][2].forEach(function(option) {
-			var key = option[1];
-			var value = option[0] == "+";
+			var key = option[0];
+			var value = option[1];
 
 			// only similar options are needed to match
 			// eg, transition bullet, transitionbullets, and bullet_transition all match here
-
 			if(key.indexOf("transition") > -1) {
 				if(key.indexOf("bullet") > -1) {
 					transitionBullets = value;
 				}
+			} else if(key == "theme") {
+				themeFile = value.toLowerCase().trim().split(" ").join(".") + ".css";
 			}
 		});
 	}

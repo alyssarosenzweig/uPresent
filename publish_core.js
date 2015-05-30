@@ -11,10 +11,15 @@ var minify = require("html-minifier").minify;
 
 var parser = new nearley.Parser(grammar.ParserRules, grammar.ParserStart);
 
-function publish(input, shouldMinify, cssContents, jsContents) {
-	var cssFile = "style.css",
-		jsFile = "scripts.js";
-	
+function publish(input, shouldMinify, useFS) {
+	var cssFile = "common.css";
+	var themeFile = "modern.dark.css";
+	var jsFile = "scripts.js";
+
+	if(useFS) {
+		fs = require("fs"); // intentional lack of var keyword
+	}
+
 	parser.feed(input);
 
 	var res = parser.results[0];
@@ -53,12 +58,29 @@ function publish(input, shouldMinify, cssContents, jsContents) {
 	code = "<!DOCTYPE html><html><head>" +
 		"<title>" + title + "</title>";
 
-	if(shouldMinify) {
-		code += "<style>" + cssContents + "</style>" +
-			"<script>" + jsContents + "</script>";
+	if(shouldMinify && useFS) {
+		var theme = fs.readFileSync(themeFile).toString().split("\n");
+		var outtheme = [];
+		var imports = [];
+
+		theme.forEach(function(line) {
+			if(line.slice(0, "@import".length) == "@import") {
+				imports.push(line);
+			} else {
+				outtheme.push(line);
+			}
+		});	
+		
+		
+		code += "<style>" + (imports.join("\n")) + 
+				    fs.readFileSync(cssFile) + "\n\n" +
+				    (outtheme.join("\n")) + "</style>" +
+			"<script>" + fs.readFileSync(jsFile) + "</script>";
 	} else {
+		if(shouldMinify) console.warn("Cannot embed CSS and JS due to nodelessness");
 		code +=  '<link rel="stylesheet" href="' + cssFile + '" type="text/css">' +
-			 '<script src="' + jsFile + '" type="text/javascript"></script>';
+			'<link rel="stylesheet" href="' + themeFile + '" type="text/css">' +	
+       			'<script src="' + jsFile + '" type="text/javascript"></script>';
 	}
 
 	code += "</head><body>" +

@@ -35,7 +35,7 @@ var opts = require("nomnom")
 	.parse();
 
 var input = fs.readFileSync(opts.input).toString();
-var output = backend(input, opts.minify, fs.readFileSync("style.css"), fs.readFileSync("scripts.js")); // heavy lifting is performed by publish_core
+var output = backend(input, opts.minify, true); // heavy lifting is performed by publish_core
 
 // write it out to a file / stdout
 

@@ -13,7 +13,7 @@ var parser = new nearley.Parser(grammar.ParserRules, grammar.ParserStart);
 
 function publish(input, shouldMinify, useFS) {
 	var cssFile = "common.css";
-	var themeFile = "modern.dark.css";
+	var themeFile = "themes/modern.dark.css";
 	var jsFile = "scripts.js";
 
 	if(useFS) {
@@ -41,7 +41,7 @@ function publish(input, shouldMinify, useFS) {
 					transitionBullets = value;
 				}
 			} else if(key == "theme") {
-				themeFile = value.toLowerCase().trim().split(" ").join(".") + ".css";
+				themeFile = "themes/" + value.toLowerCase().trim().split(" ").join(".") + ".css";
 			}
 		});
 	}

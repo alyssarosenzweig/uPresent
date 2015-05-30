@@ -50,7 +50,7 @@ li {
     margin-bottom: 0.3em;
 }
 
-li.hidden {
+div.transbullets > ul > li {
 	visibility: hidden;
 }
 

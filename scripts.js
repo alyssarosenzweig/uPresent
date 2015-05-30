@@ -2,45 +2,49 @@ window.addEventListener("load", function(e) {
     var currentSlide = 0;
     var blankSlide = false;
     var actualSlide = null;
-    var listIndex = 0;
+    var listIndex = -1;
+
+    function getBulletPointCount(slideNum) {
+	var slide = document.getElementById("slide" + slideNum);
+
+	var count = 0;
+	
+	for(var i = 0; i < slide.children.length; ++i) {
+		if(slide.children[i].tagName == "UL") {
+			count += slide.children[i].children.length;
+		}
+	}
+
+	return count;
+    }
 
     function slideSwitch(num) {
 	actualSlide = document.getElementById("slide"+currentSlide);
+	var slide = actualSlide;
 
-	var i = 0,
-	    tempListIndex = 0;
+	if(num > 0)
+		listIndex += num;
 
-	listIndex += num; // works in the correct direction
-
-	while( (i < actualSlide.children.length) && (i >= 0) ) {
-		if(actualSlide.children[i].tagName == "UL") {
-			var ul = actualSlide.children[i];
-
-			for(var j = 0; j < ul.children.length; ++j) {
-				if(listIndex == tempListIndex + 1) {
-					ul.children[j].style.visibility = (ul.children[j].style.visibility != 'visible') ? 'visible' : 'hidden';
-					break;
-				}
-
-				++tempListIndex;
+	if(getBulletPointCount(currentSlide) > 0 && listIndex < getBulletPointCount(currentSlide)) {
+		for(var i = 0; i < slide.children.length; ++i) {
+			if(slide.children[i].tagName == "UL") {
+				var bullet = slide.children[i].children[listIndex];
+				if(bullet) bullet.style.visibility = bullet.style.visibility != 'visible' ? 'visible' : 'hidden';
 			}
 		}
 
-		if(tempListIndex == listIndex) {
-			break;
-		}
+		if(num < 0)
+			listIndex += num;
 
-		++i;
+		if(listIndex > -2) return;
+
 	}
 
-	if(listIndex < 3 + 1) {
-		// don't switch the slide yet
-		console.log(listIndex);
-		if(!(listIndex < 0)) return;
-	}
+	if(num > 0)
+		listIndex = -1;
+	else
+		listIndex = getBulletPointCount(currentSlide - 1) - 1;
 
-	listIndex = 0;
-    
         if (document.getElementById("slide"+(currentSlide + num))) {
             currentSlide += num;
         } // else slide doesn't exist and there's nothing to switch to
@@ -110,6 +114,6 @@ window.addEventListener("load", function(e) {
     window.onmousewheel = document.onmousewheel = wheel;
 
 
-    slideSwitch(0);
+    //slideSwitch(0);
 });
 

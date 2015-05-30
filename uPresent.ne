@@ -7,7 +7,7 @@ main -> config _ presentation _ {% function(d) {
 } %}
 
 config -> pphrase |
-	  pphrase _  configOption:+
+	  pphrase _  configOption:+ [\s]
 
 configOption -> "+" pphrase
 		| "-" pphrase 
@@ -81,7 +81,7 @@ pphrase -> pcharacter {% id %}
 pcharacter -> [ A-Za-z0-9!@#$%^&*()_+\-\=}{\[\]"':;?/>.<,]
 
 linecharacter -> [A-Za-z0-9 @$%^&()+=.,<>/?'";:\|\]\{\}]
-marker -> "#" lphrase "\n" {% function(d) {
+marker -> "# " lphrase "\n" {% function(d) {
 		return "<h1>" +
 			d[1] +
 			"</h1>";

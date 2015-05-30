@@ -2,9 +2,15 @@
 # written in nearley
 # see test.up for an example of what this parses
 
-main -> pphrase _ presentation _ {% function(d) {
+main -> config _ presentation _ {% function(d) {
 	return [d[0], d[2]];
 } %}
+
+config -> pphrase |
+	  pphrase _  configOption:+
+
+configOption -> "+" pphrase
+		| "-" pphrase 
 
 presentation -> slide |
 		presentation slide {% function(d) {

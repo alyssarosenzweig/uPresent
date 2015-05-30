@@ -48,8 +48,12 @@ li {
     list-style: none;
     line-height: 1.3em;
     margin-bottom: 0.3em;
-    visibility: hidden;
 }
+
+li.hidden {
+	visibility: hidden;
+}
+
 li:before {
     display: inline-block;
     content: "\2014";

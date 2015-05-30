@@ -48,10 +48,36 @@ parser.feed(input);
 
 var res = parser.results[0];
 var code = "";
-var title = res[0];
+var title = res[0][0];
+var transitionBullets = false;
+
+if(res[0][2]) {
+	// parse options
+	
+	res[0][2].forEach(function(option) {
+		var key = option[1];
+		var value = option[0] == "+";
+
+		console.log(key+","+value);
+
+		// only similar options are needed to match
+		// eg, transition bullet, transitionbullets, and bullet_transition all match here
+
+		if(key.indexOf("transition") > -1) {
+			if(key.indexOf("bullet") > -1) {
+				transitionBullets = value;
+			}
+		}
+	});
+	console.log(res[0][2]);
+}
 
 res[1].forEach(function(slide, n) {
-			code += '<div class="slide" id="slide' + n + '">' + slide + '</div>';
+		slideClass = "slide";
+		
+		if(transitionBullets) slideClass += " transbullets";
+
+		code += '<div class="' + slideClass + '" id="slide' + n + '">' + slide + '</div>';
 			});
 
 var body = code;

@@ -18,9 +18,13 @@ uPresent follows standard UNIX philosophy for compiling:
 
 To install, at the moment type `npm install` in the working directory after cloning the repository and installing node.js and npm.
 
+If uPresent is installed with `-g` (e.g.: `npm install -g`), `node publish.js` can be replaced with the single command `up`.
+
 Syntax
 ============
 The first line of a uPresent presentation is the name of the presentation, always.
+
+After the title and before the first slide, configuration options can be used. A "+" or "-" symbol will be the first character on the line, and then a configuration option will be specified. At the moment, the only configuration option supported is "bullet transition", although order of the words does not matter. If configuration is being specified, there must be a new line before the list of options and a new line after.
 
 The rest of the presentation consists of a series of slides.
 

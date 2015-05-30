@@ -70,7 +70,6 @@ window.addEventListener("load", function(e) {
 
 	document.addEventListener("keydown", function(e) {
 		e.preventDefault();
-		console.log(e.keyCode);
 	
 		if(e.keyCode == 17) return; // ctrl-key
 
@@ -96,12 +95,8 @@ window.addEventListener("load", function(e) {
 
 	document.addEventListener("click", function(e) {
 		// switch differently based on which button is pressed
-
-		if(e.which == 1) {
-			slideSwitch(1);
-		} else {
-			slideSwitch(-1);
-		}
+		
+		slideSwitch( e.which == 1 ? 1 : -1 );
 	});
 
 	function wheel(e) {

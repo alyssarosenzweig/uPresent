@@ -1,0 +1,14 @@
+@import url(http://fonts.googleapis.com/css?family=Lato:300,300italic);
+
+body {
+	background-color: #011;
+	font-family: Lato;
+}
+
+.slide {
+	color: #eee;
+}
+
+a {
+    color: #9CF;
+}

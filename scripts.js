@@ -27,11 +27,18 @@ function slideSwitch(num) {
 		if(num > 0)
 			listIndex += num;
 
+		var count = 0;
+
 		if(getBulletPointCount(currentSlide) > 0 && listIndex < getBulletPointCount(currentSlide)) {
 			for(var i = 0; i < slide.children.length; ++i) {
 				if(slide.children[i].tagName == "UL") {
-					var bullet = slide.children[i].children[listIndex];
-					if(bullet) bullet.style.visibility = bullet.style.visibility != 'visible' ? 'visible' : 'hidden';
+					if(listIndex - count >= slide.children[i].children.length) {
+						count += slide.children[i].children.length;				
+					} else {
+						var bullet = slide.children[i].children[listIndex - count];
+						if(bullet) bullet.style.visibility = bullet.style.visibility != 'visible' ? 'visible' : 'hidden';
+						break;
+					}
 				}
 			}
 

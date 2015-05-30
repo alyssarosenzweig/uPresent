@@ -22,28 +22,32 @@ window.addEventListener("load", function(e) {
 	actualSlide = document.getElementById("slide"+currentSlide);
 	var slide = actualSlide;
 
-	if(num > 0)
-		listIndex += num;
-
-	if(getBulletPointCount(currentSlide) > 0 && listIndex < getBulletPointCount(currentSlide)) {
-		for(var i = 0; i < slide.children.length; ++i) {
-			if(slide.children[i].tagName == "UL") {
-				var bullet = slide.children[i].children[listIndex];
-				if(bullet) bullet.style.visibility = bullet.style.visibility != 'visible' ? 'visible' : 'hidden';
-			}
-		}
-
-		if(num < 0)
+	// only perform fancy bullet point transitions if requested by the presentation
+	
+	if(actualSlide.className.indexOf("transbullets") > -1) {
+		if(num > 0)
 			listIndex += num;
 
-		if(listIndex > -2) return;
+		if(getBulletPointCount(currentSlide) > 0 && listIndex < getBulletPointCount(currentSlide)) {
+			for(var i = 0; i < slide.children.length; ++i) {
+				if(slide.children[i].tagName == "UL") {
+					var bullet = slide.children[i].children[listIndex];
+					if(bullet) bullet.style.visibility = bullet.style.visibility != 'visible' ? 'visible' : 'hidden';
+				}
+			}
 
+			if(num < 0)
+				listIndex += num;
+
+			if(listIndex > -2) return;
+
+		}
+
+		if(num > 0)
+			listIndex = -1;
+		else
+			listIndex = getBulletPointCount(currentSlide - 1) - 1;
 	}
-
-	if(num > 0)
-		listIndex = -1;
-	else
-		listIndex = getBulletPointCount(currentSlide - 1) - 1;
 
         if (document.getElementById("slide"+(currentSlide + num))) {
             currentSlide += num;

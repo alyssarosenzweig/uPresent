@@ -1,6 +1,6 @@
 {
-  "name": "uPresent",
-  "version": "0.0.0",
+  "name": "upresent",
+  "version": "1.0.0",
   "description": "Markdown for presentations; compiled into HTML",
   "main": "publish.js",
   "bin": {

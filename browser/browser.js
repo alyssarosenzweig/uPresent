@@ -29,7 +29,7 @@ function render_presentation(input) {
 
 // fetches the input markdown from the textarea
 function get_input() {
-    return editor.getValue();
+    return editor.getValue() + "\n\n"; // newlines are appended to prevent stupid errors
 }
 
 // meat of the actual editor

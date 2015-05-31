@@ -35,7 +35,6 @@ function get_input() {
 // meat of the actual editor
 
 window.render = function() {
-    console.log(get_input());
     render_presentation(get_input());
 };
 

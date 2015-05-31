@@ -1,0 +1,18 @@
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,400italic);
+
+body {
+    background-color: #EFEFEF;
+    font-family: Roboto;
+}
+
+.slide {
+    width: 80%;
+    margin: auto;
+    background-color: white;
+    color: #222;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.23), 0 3px 12px rgba(0, 0, 0, 0.16);
+}
+
+a {
+    color: #26C6DA;
+}

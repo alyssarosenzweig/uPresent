@@ -8,6 +8,7 @@ var grammar = require("./uPresent.ne.js");
 var nearley = require("nearley");
 var beautify_html = require("js-beautify").html;
 var minify = require("html-minifier").minify;
+var path = require("path");
 
 var parser = new nearley.Parser(grammar.ParserRules, grammar.ParserStart);
 
@@ -60,7 +61,7 @@ function publish(input, shouldMinify, useFS) {
         "<title>" + title + "</title>";
 
     if(shouldMinify && useFS) {
-        var theme = fs.readFileSync(themeFile).toString().split("\n");
+        var theme = fs.readFileSync(path.join(__dirname,themeFile)).toString().split("\n");
         var outtheme = [];
         var imports = [];
 
@@ -74,9 +75,9 @@ function publish(input, shouldMinify, useFS) {
         
         
         code += "<style>" + (imports.join("\n")) + 
-                    fs.readFileSync(cssFile) + "\n\n" +
+                    fs.readFileSync(path.join(__dirname, cssFile)) + "\n\n" +
                     (outtheme.join("\n")) + "</style>" +
-            "<script>" + fs.readFileSync(jsFile) + "</script>";
+            "<script>" + fs.readFileSync(path.join(__dirname, jsFile)) + "</script>";
     } else {
         if(shouldMinify) console.warn("Cannot embed CSS and JS due to nodelessness");
         code +=  '<link rel="stylesheet" href="' + cssFile + '" type="text/css">' +

@@ -19,4 +19,13 @@ function render_presentation(input) {
     iframe.close();
 }
 
-window.uPresent = render_presentation; 
+// fetches the input markdown from the textarea
+function get_input() {
+    return document.getElementById("text").value;
+}
+
+// meat of the actual editor
+
+window.render = function() {
+    render_presentation(get_input());
+};

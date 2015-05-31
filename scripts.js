@@ -75,10 +75,6 @@ function makeBlankSlide(actuallyBlank) {
 }
 
 function onKeydown(e) {
-    e.preventDefault();
-
-    if(e.keyCode == 17) return; // ctrl-key
-
     if(e.keyCode === 37 || e.keyCode === 33 || e.keyCode === 38 || e.keyCode === 8) {
         makeBlankSlide(false);
             slideSwitch(-1);
@@ -93,12 +89,18 @@ function onKeydown(e) {
         } else if(elem.mozRequestFullScreen) {
             elem.mozRequestFullScreen();
         }
-    } else {
+    } else if(e.keyCode < 128) { // nonprintable keys likely have a different purpose which *also* should be implemented
         makeBlankSlide(false);
         slideSwitch(1);
+    } else if(e.keyCode == 17) {
+        // do nothing
+        // ctrl-key
+    } else {
+        return; // short circuit now the prevent default
     }
+ 
+    e.preventDefault();
 }
-
 function onClick(e) {
     // switch differently based on which button is pressed
     slideSwitch( e.which == 1 ? 1 : -1 );

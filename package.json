@@ -21,6 +21,9 @@
     "js-beautify": "^1.5.5",
     "html-minifier": "^0.7.2"
   },
+  "devDependencies": {
+    "codemirror": "^5.3.0"
+  },
   "keywords": [
     "markdown",
     "presentation",

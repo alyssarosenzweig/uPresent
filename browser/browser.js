@@ -5,6 +5,8 @@
 
 var backend = require("../publish_core.js");
 
+var editor;
+
 // calls the backend to perform the actual publishing
 function publish_presentation(input_markdown) {
     return backend(input_markdown, false, false); // TODO: enable minification and other goodies with filesystem
@@ -21,11 +23,18 @@ function render_presentation(input) {
 
 // fetches the input markdown from the textarea
 function get_input() {
-    return document.getElementById("text").value;
+    return editor.getValue();
 }
 
 // meat of the actual editor
 
 window.render = function() {
+    console.log(get_input());
     render_presentation(get_input());
 };
+
+window.addEventListener("load", function() {
+    editor = CodeMirror.fromTextArea(document.getElementById("text"), {
+        mode: "markdown"
+    });
+});

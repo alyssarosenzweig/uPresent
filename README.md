@@ -1,16 +1,16 @@
-uPresent
+µPresent
 =============
 
 [![Join the chat at https://gitter.im/bobbybee/uPresent](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/bobbybee/uPresent?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-uPresent, pronounced "micro present", is a markdown flavor for writing presentations; uPresent presentations are written in a concise, intuitive syntax and are compiled into beautiful, lightweight HTML.
+µPresent (alternativel spelled uPresent), pronounced "micro present", is a markdown flavor for writing presentations; µPresent presentations are written in a concise, intuitive syntax and are compiled into beautiful, lightweight HTML.
 
-uPresent compiles [this](https://github.com/bobbybee/uPresent/blob/master/test.up) to [this](http://backtick.town/~alyssa/test.html#slide0).
+µPresent compiles [this](https://github.com/bobbybee/uPresent/blob/master/test.up) to [this](http://backtick.town/~alyssa/test.html#slide0).
 
 Usage
 =============
 
-uPresent follows standard UNIX philosophy for compiling:
+µPresent follows standard UNIX philosophy for compiling:
 
     up [presentation.up] -o [presentation.html]
 
@@ -20,7 +20,7 @@ To install, type `npm install upresent -g`. Prefixing this command with `sudo` m
 
 Syntax
 ============
-The first line of a uPresent presentation is the name of the presentation, always.
+The first line of a µPresent presentation is the name of the presentation, always.
 
 After the title and before the first slide, configuration options can be used. A "+" or "-" symbol will be the first character on the line, and then a configuration option will be specified. At the moment, the only configuration option supported is "bullet transition", although order of the words does not matter. If configuration is being specified, there must be a new line before the list of options and a new line after.
 

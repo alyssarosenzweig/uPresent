@@ -9,8 +9,8 @@ main -> config _ presentation _ {% function(d) {
 config -> pphrase |
 	  pphrase _  configOption:+ [\s]
 
-configOption -> "+" pphrase "\n" {% function(d) { return [d[0], true] } %}
-		| "-" pphrase "\n" {% function(d) { return [d[0], false] } %}
+configOption -> "+" pphrase "\n" {% function(d) { return [d[1], true] } %}
+		| "-" pphrase "\n" {% function(d) { return [d[1], false] } %}
 		| pphrase ": " pphrase "\n" {% function(d) { return [d[0], d[2]] } %}
 
 presentation -> slide |

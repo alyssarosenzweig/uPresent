@@ -6,13 +6,14 @@
 
 var grammar = require("./uPresent.ne.js");
 var nearley = require("nearley");
-var beautify_html = require("js-beautify").html;
-var minify = require("html-minifier").minify;
+//var beautify_html = require("js-beautify").html;
+//var minify = require("html-minifier").minify;
 var path = require("path");
 
-var parser = new nearley.Parser(grammar.ParserRules, grammar.ParserStart);
 
 function publish(input, shouldMinify, useFS) {
+    var parser = new nearley.Parser(grammar.ParserRules, grammar.ParserStart);
+    
     var cssFile = "common.css";
     var themeFile = "themes/modern.dark.css";
     var jsFile = "scripts.js";
@@ -21,6 +22,7 @@ function publish(input, shouldMinify, useFS) {
         fs = require("fs"); // intentional lack of var keyword
     }
 
+    parser.current = 0;
     parser.feed(input);
 
     var res = parser.results[0];
@@ -111,14 +113,16 @@ function publish(input, shouldMinify, useFS) {
 
     // depending on the user options, either minify (production) or beautify (development)
 
-    if(shouldMinify) {
+/*    if(shouldMinify) {
         var output = minify(code, {
             minifyJS: true,
             minifyCSS: true
         });
     } else {
         var output = beautify_html(code, {});
-    }
+    }*/
+
+    output = code; // minfication / beautifucation disabled for now. TODO: fix
 
     return output;
 }

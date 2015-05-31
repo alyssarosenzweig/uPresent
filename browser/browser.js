@@ -16,9 +16,15 @@ function publish_presentation(input_markdown) {
 function render_presentation(input) {
     var iframe = document.getElementById("presentation").contentWindow.document;
 
-    iframe.open();
-    iframe.write(publish_presentation(input));
-    iframe.close();
+    var output = publish_presentation(input);
+
+    // don't update if there are errors
+
+    if(output) {
+        iframe.open();
+        iframe.write(publish_presentation(input));
+        iframe.close();
+    }
 }
 
 // fetches the input markdown from the textarea
@@ -37,4 +43,6 @@ window.addEventListener("load", function() {
     editor = CodeMirror.fromTextArea(document.getElementById("text"), {
         mode: "markdown"
     });
+
+    editor.on("change", render);
 });

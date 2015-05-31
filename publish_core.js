@@ -61,7 +61,25 @@ function publish(input, shouldMinify, useFS) {
         "<title>" + title + "</title>";
 
     if(shouldMinify && useFS) {
-        var theme = fs.readFileSync(path.join(__dirname,themeFile)).toString().split("\n");
+        var theme = "";
+
+        // to find the theme file, we look through the theme 'paths'
+        // that is, uPresent's theme folder and the current directory
+        // if the theme exists locally, use that instead
+
+        try {
+            theme = fs.readFileSync("./" + themeFile).toString().split("\n");
+        } catch(e) {
+            // else load the packaged theme
+
+            try {
+                theme = fs.readFileSync(path.join(__dirname,themeFile)).toString().split("\n");
+            } catch(e) {
+                console.error("Theme "+themeFile+" not found. Please check your spelling. If you are designing a theme, please check your path. Else, file an issue on the tracker");
+                process.exit(0);
+            }
+        }
+
         var outtheme = [];
         var imports = [];
 

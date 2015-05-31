@@ -7,6 +7,7 @@
 
 var fs = require("fs");
 var backend = require("./publish_core.js");
+var path = require("path");
 
 var opts = require("nomnom")
     .script("up")
@@ -29,7 +30,7 @@ var opts = require("nomnom")
         flag: true,
         help: "Print version and exit",
         callback: function() {
-           return require('../package.json').version;
+           return require(path.join(__dirname, 'package.json')).version;
         }
     })
     .parse();

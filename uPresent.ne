@@ -9,29 +9,19 @@ main -> config _ presentation _ {% function(d) {
 config -> pphrase |
 	  pphrase _  configOption:+ [\s]
 
-configOption -> "+" pphrase "\n" {% function(d) { return [d[1], true] } %}
-		| "-" pphrase "\n" {% function(d) { return [d[1], false] } %}
-		| pphrase ": " pphrase "\n" {% function(d) { return [d[0], d[2]] } %}
+configOption ->   "+" pphrase "\n" {% function(d) { return [d[1], true] } %}
+		        | "-" pphrase "\n" {% function(d) { return [d[1], false] } %}
+                | pphrase ": " pphrase "\n" {% function(d) { return [d[0], d[2]] } %}
 
-presentation -> slide |
-		presentation slide {% function(d) {
-			return d[0].concat([d[1]]);
-		} %}
+presentation -> slide:+ {% function(d) { return [].concat.apply([], d) } %}
 
-slide -> slidemarker "\n" content _ {%
-	function(d) {
-		return d[2]
-	} %}
+slide -> "-":+ "\n" content _ {% function(d) { return d[2] } %}
 
-slidemarker -> "-" {% function() { return null } %}
-		| slidemarker "-" {% function() { return null } %}
-
-content -> line | 
-	   content line {% function(d) { return d[0] + d[1] } %}
+content -> line:+ {% function(d) { return d[0].join(""); } %}
 
 line -> _ marker "\n" {% function(d) { return d[1] } %} |
 	_ lphrase "\n" {% function(d) { return "<p>" + d[1] + "</p>" } %} |
-	_ list "\n" {% function(d) { return "<ul>"+d[1]+"</ul>" } %}
+	_ listnode:+ "\n" {% function(d) { return "<ul>"+(d[1].join(""))+"</ul>" } %}
 
 italics -> "_" lphrase "_" {% function(d) { return "<em>" + d[1] + "</em>" } %}
 bold -> "**" lphrase "**" {% function(d) { return "<strong>" + d[1] + "</strong>" } %}
@@ -76,10 +66,7 @@ nphrase -> lphrase [#] {% function(d) { return d[0]+d[1] } %}
 bphrase -> lphrase {% id %}
 	| _ {% function() { return "" } %}
 
-pphrase -> pcharacter {% id %}
-	| pphrase pcharacter {% function(d) { return d[0]+d[1] } %}
- 
-pcharacter -> [ A-Za-z0-9!@#$%^&*()_+\-\=}{\[\]"':;?/>.<,]
+pphrase -> [ A-Za-z0-9!@#$%^&*()_+\-\=}{\[\]"':;?/>.<,]:+ {% function(d) { return d[0].join("") } %}
 
 linecharacter -> [A-Za-z0-9 @$%^&()+=.,<>/?'";:\|\]\{\}]
 marker -> "# " lphrase "\n" {% function(d) {
@@ -97,9 +84,7 @@ marker -> "# " lphrase "\n" {% function(d) {
 		return "<br/>";
 	} %}
 
-pathchar -> [A-Za-z0-9:\/!@#$%^&*()_+=\-\'\.] {% id %}
-path ->   pathchar {% id %}
-	| path pathchar {% function(d) { return d[0]+d[1] } %}
+path -> [A-Za-z0-9:\/!@#$%^&*()_+=\-\'\.]:+ {% function(d) { return d[0].join() } %}
 
 listnode -> "~ " lphrase "\n" {% function(d) {
 		return "<li>" + d[1] + "</li>";
@@ -107,9 +92,6 @@ listnode -> "~ " lphrase "\n" {% function(d) {
 	| _ "~~ " lphrase "\n" {% function(d) {
 		return "<li class='alt'>" + d[2] + "</li>"
 	} %}
-
-list -> listnode {% id %} |
-	list listnode {% function(d) { return d[0]+d[1] } %}
 
 _ -> null {% function(){ return null } %}
 	| [\s] _ {% function() { return null } %}

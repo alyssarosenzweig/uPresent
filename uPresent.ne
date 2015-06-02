@@ -19,9 +19,10 @@ slide -> "-":+ "\n" content _ {% function(d) { return d[2] } %}
 
 content -> line:+ {% function(d) { return d[0].join(""); } %}
 
-line -> _ marker "\n" {% function(d) { return d[1] } %} |
-	_ lphrase "\n" {% function(d) { return "<p>" + d[1] + "</p>" } %} |
-	_ listnode:+ "\n" {% function(d) { return "<ul>"+(d[1].join(""))+"</ul>" } %}
+line -> marker "\n" {% function(d) { return d[0] } %} |
+	lphrase "\n" {% function(d) { return "<p>" + d[0] + "</p>" } %} |
+	listnode:+ "\n" {% function(d) { return "<ul>"+(d[0].join(""))+"</ul>" } %} |
+    "\n" {% function(d) { return ""; } %}
 
 italics -> "_" lphrase "_" {% function(d) { return "<em>" + d[1] + "</em>" } %}
 bold -> "**" lphrase "**" {% function(d) { return "<strong>" + d[1] + "</strong>" } %}
@@ -63,9 +64,9 @@ nphrase -> lphrase [#] {% function(d) { return d[0]+d[1] } %}
 bphrase -> lphrase {% id %}
 	| _ {% function() { return "" } %}
 
-pphrase -> [ A-Za-z0-9!@#$%^&*()_+\-\=}{\[\]"':;?/>.<,]:+ {% function(d) { return d[0].join("") } %}
+pphrase -> [ A-Za-z0-9!@#$%^&*()_+\-\=}{\[\]"':;?/>.<,i]:+ {% function(d) { return d[0].join("") } %}
 
-linecharacter -> [A-Za-z0-9 @$%^&()+=.,<>/?'";:\|\]\{\}]
+linecharacter -> [A-Za-z0-9 @$%^&()+=.,<>/?'";:\|\]\{\}\(\)]
 marker -> "# " lphrase "\n" {% function(d) {
 		return "<h1>" +
 			d[1] +
@@ -81,7 +82,7 @@ marker -> "# " lphrase "\n" {% function(d) {
 		return "<br/>";
 	} %}
 
-path -> [A-Za-z0-9:\/!@#$%^&*()_+=\-\'\.]:+ {% function(d) { return d[0].join("") } %}
+path -> [A-Za-z0-9:\/!@#$%^&*()_+=\-\'\.\(\)]:+ {% function(d) { return d[0].join("") } %}
 
 listnode -> "~ " lphrase "\n" {% function(d) {
 		return "<li>" + d[1] + "</li>";

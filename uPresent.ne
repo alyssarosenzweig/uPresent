@@ -81,7 +81,7 @@ marker -> "# " lphrase "\n" {% function(d) {
 		return "<br/>";
 	} %}
 
-path -> [A-Za-z0-9:\/!@#$%^&*()_+=\-\'\.]:+ {% function(d) { return d[0].join() } %}
+path -> [A-Za-z0-9:\/!@#$%^&*()_+=\-\'\.]:+ {% function(d) { return d[0].join("") } %}
 
 listnode -> "~ " lphrase "\n" {% function(d) {
 		return "<li>" + d[1] + "</li>";

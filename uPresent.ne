@@ -2,7 +2,7 @@
 # written in nearley
 # see test.up for an example of what this parses
 
-main -> config _ presentation _ {% function(d) {
+main -> config _ presentation {% function(d) {
 	return [d[0], d[2]];
 } %}
 
@@ -29,10 +29,7 @@ image -> "![" pphrase "](" path ")" {% function(d) { return '<img alt="' + d[1] 
 
 linkprotocol -> "http" | "https"
 domain -> [A-Za-z\.]:+ {% function(d) { return d[0].join(""); } %}
-rawlink -> linkprotocol "://" domain {% function(d) {
-			return "<a href='" + d[0] + d[1] + d[2] + "'>" + d[0] + d[1] + d[2] + "</a>";
-		} %}
-	| linkprotocol "://" domain "/" [^ \n]:+ {% function(d) {
+rawlink -> linkprotocol "://" domain "/" [^ \n\t]:* {% function(d) {
 			return "<a href='" + d[0] + d[1] + d[2] + d[3] + d[4].join("") + "'>" + d[0] + d[1] + d[2] + d[3] + d[4].join("") + "</a>";
 		} %}
 
@@ -59,7 +56,7 @@ nphrase -> lphrase [#] {% function(d) { return d[0]+d[1] } %}
 		| lphrase image {% function(d) { return d[0]+d[1] } %}
 		| lphrase [\-] {% function(d) { return d[0]+d[1] } %}
 		| lphrase [!] [^\[] {% function(d) { return d[0]+d[1]+d[2] } %}
-		| bphrase rawlink {% function(d) { return d[0]+d[1] } %}
+		| bphrase rawlink [\s] {% function(d) { return d[0]+d[1] } %}
 		| bphrase namelink {% function(d) { return d[0]+d[1] } %}
 		| lphrase "[" {% function(d) { return d[0]+d[1] } %}
 

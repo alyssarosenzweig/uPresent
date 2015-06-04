@@ -80,7 +80,7 @@ marker -> "# " lphrase "\n" {% function(d) {
         | "[linebreak]\n" {% function(d) { return "<br/>"; } %}
 
         | "[" pphrase "] " lphrase "\n" {% function(d) {
-            return "<div class='" + d[1] + "'>" + d[3]; "</div>";
+            return "<div class='" + d[1] + "'>" + d[3] + "</div>";
         } %}
 
 path -> [A-Za-z0-9:\/!@#$%^&*()_+=\-\'\.\(\)]:+ {% function(d) { return d[0].join("") } %}

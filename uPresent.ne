@@ -79,7 +79,7 @@ marker -> "# " lphrase "\n" {% function(d) {
    
         | "[linebreak]\n" {% function(d) { return "<br/>"; } %}
 
-        | "[" pphrase "]" lphrase "\n" {% function(d) {
+        | "[" pphrase "] " lphrase "\n" {% function(d) {
             return "<div class='" + d[1] + "'>" + d[3]; "</div>";
         } %}
 

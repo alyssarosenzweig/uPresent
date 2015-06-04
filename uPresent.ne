@@ -15,7 +15,7 @@ configOption ->   "+" pphrase "\n" {% function(d) { return [d[1], true] } %}
 
 presentation -> slide:+ {% function(d) { return [].concat.apply([], d) } %}
 
-slide -> "-":+ "\n" content _ {% function(d) { return d[2] } %}
+slide -> "-":+ "\n" content {% function(d) { return d[2] } %}
 
 content -> line:+ {% function(d) { return d[0].join(""); } %}
 

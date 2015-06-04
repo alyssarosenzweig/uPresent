@@ -72,15 +72,16 @@ marker -> "# " lphrase "\n" {% function(d) {
 			d[1] +
 			"</h1>";
 		} %}
-	| image bphrase {% function(d) {
-		return "<p>" + d[0] + d[1] + "</p>";
-	} %}
-	| "[hanging] " lphrase {% function(d) {
-		return "<div class='hanging'>" + d[1] + "</div>";
-	} %}
-	| "[linebreak]" {% function(d) {
-		return "<br/>";
-	} %}
+        
+        | image bphrase {% function(d) {
+            return "<p>" + d[0] + d[1] + "</p>";
+        } %}
+   
+        | "[linebreak]\n" {% function(d) { return "<br/>"; } %}
+
+        | "[" pphrase "]" lphrase "\n" {% function(d) {
+            return "<div class='" + d[1] + "'>" + d[3]; "</div>";
+        } %}
 
 path -> [A-Za-z0-9:\/!@#$%^&*()_+=\-\'\.\(\)]:+ {% function(d) { return d[0].join("") } %}
 

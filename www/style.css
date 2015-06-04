@@ -1,0 +1,27 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans);
+@import url(http://fonts.googleapis.com/css?family=Source+Code+Pro);
+
+code {
+    white-space: pre;
+    font-family: Source Code Pro, monospace;
+}
+
+.header {
+    text-align: right;
+}
+
+a {
+    text-decoration: none;
+    color: blue;
+}
+
+a:visited {
+    color: blue;   
+}
+
+body {
+    background-color: #FEF;
+    font-family: Open Sans, sans-serif;
+    font-size: 1em;
+    margin: 2% 5% 2% 5%;
+}

@@ -25,17 +25,27 @@ a:visited {
 body {
     background-color: #FFF;
     font-family: Open Sans, sans-serif;
-    font-size: 1em;
-    margin: 2% 4% 2% 4%;
+    font-size: 1.2em;
+    margin: 6% 4% 6% 4%;
 }
 
-.demo {
+div#content {
+    width: 40em;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.demo-container {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 56.25%;
+}
+
+.demo-container iframe {
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
     position: absolute;
-    width: 90%;
-    height: 50%;
-    display: block;
-}
-
-.demo + div {
-    margin-top: 57%;
 }

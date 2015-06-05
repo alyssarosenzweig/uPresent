@@ -4,10 +4,13 @@
 code {
     white-space: pre;
     font-family: Source Code Pro, monospace;
+    position: relative;
+    left: 2%;
 }
 
 .header {
     text-align: right;
+    margin-bottom: 3%;
 }
 
 a {
@@ -20,8 +23,19 @@ a:visited {
 }
 
 body {
-    background-color: #FEF;
+    background-color: #FFF;
     font-family: Open Sans, sans-serif;
     font-size: 1em;
-    margin: 2% 5% 2% 5%;
+    margin: 2% 4% 2% 4%;
+}
+
+.demo {
+    position: absolute;
+    width: 90%;
+    height: 50%;
+    display: block;
+}
+
+.demo + div {
+    margin-top: 54%;
 }

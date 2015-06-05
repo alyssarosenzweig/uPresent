@@ -2,7 +2,7 @@
 @import url(http://fonts.googleapis.com/css?family=Source+Code+Pro);
 
 code {
-    white-space: pre;
+    white-space: pre-wrap;
     font-family: Source Code Pro, monospace;
     position: relative;
     left: 2%;

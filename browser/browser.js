@@ -44,6 +44,14 @@ window.edit = function() {
     document.body.className = "editor";
 }
 
+window.save = function() {
+    var source = publish_presentation(get_input());
+    
+    var dataURI = "data:application/force-download, " + encodeURIComponent(source);
+
+    window.open(dataURI, "_blank", "menubar=0,toolbar=0,location=0,personalbar=0,status=0").focus();
+}
+
 window.addEventListener("load", function() {
     editor = CodeMirror.fromTextArea(document.getElementById("text"), {
         mode: "markdown"

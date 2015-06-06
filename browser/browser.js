@@ -76,6 +76,13 @@ function fetchHTTPHref(hreffer, callback) {
     request.send();
 }
 
+function download(url) {
+    var btn = document.createElement("a");
+    btn.href = url;
+    btn.download = "presentation.html";
+    btn.click();
+}
+
 window.save = function() {
     // to save, we'll already be in render mode
     // this is useful as this enables us to perform DOM manipulation <3
@@ -125,13 +132,13 @@ window.save = function() {
             frame.head.appendChild(scriptObject);
         });
 
-        var dataURI = "data:application/force-download, " + encodeURIComponent(frame.documentElement.outerHTML || frame.documentElement.innerHTML);
+        var source = frame.documentElement.outerHTML || frame.documentElement.innerHTML;
 
-        console.log(dataURI);
-       
-        window.dataURI = dataURI;
+        if(window.exportedFile !== null) window.URL.revokeObjectURL(window.exportedFile);
 
-        window.open(dataURI, "_blank", "menubar=0,toolbar=0,location=0,personalbar=0,status=0").focus();
+        window.exportedFile = window.URL.createObjectURL(new Blob([source], { type: "text/html" } ));
+
+        download(window.exportedFile);
     }
 }
 

@@ -5,7 +5,7 @@
  * however, actual uPresent features are from browser.js
  */
 
-var uPresent = require("./browser.js");
+var uPresent = require("../uPresent.browser.js");
 
 var editor;
 

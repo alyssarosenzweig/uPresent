@@ -10,7 +10,7 @@ var editor;
 
 // calls the backend to perform the actual publishing
 function publish_presentation(input_markdown) {
-    return backend(input_markdown, false, false, "../"); // TODO: enable minification and other goodies with filesystem
+    return backend(input_markdown, false, false, "../../"); // TODO: enable minification and other goodies with filesystem
 }
 
 // renders the published presentation to an iframe for previewing the HTML
@@ -1046,7 +1046,7 @@ process.umask = function() { return 0; };
  * however, actual uPresent features are from browser.js
  */
 
-var uPresent = require("./browser.js");
+var uPresent = require("../uPresent.browser.js");
 
 var editor;
 
@@ -1078,4 +1078,4 @@ window.addEventListener("load", function() {
     });
 });
 
-},{"./browser.js":1}]},{},[8]);
+},{"../uPresent.browser.js":1}]},{},[8]);

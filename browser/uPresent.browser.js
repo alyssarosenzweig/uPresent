@@ -9,7 +9,7 @@ var editor;
 
 // calls the backend to perform the actual publishing
 function publish_presentation(input_markdown) {
-    return backend(input_markdown, false, false, "../"); // TODO: enable minification and other goodies with filesystem
+    return backend(input_markdown, false, false, "../../"); // TODO: enable minification and other goodies with filesystem
 }
 
 // renders the published presentation to an iframe for previewing the HTML

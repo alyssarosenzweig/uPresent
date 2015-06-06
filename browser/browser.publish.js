@@ -974,11 +974,20 @@ function fetchHTTPHref(hreffer, callback) {
     request.send();
 }
 
-function downloadButtonInit(url) {
+function download(url) {
     var btn = document.createElement("a");
     btn.href = url;
     btn.download = "presentation.html";
-    btn.click();
+    
+    if(window.chrome) {
+        // automatic downloading works in modern versions of chrome <3
+     
+        btn.click();
+    } else {
+       btn.innerHTML = "Download";
+
+       document.querySelector("div.render > div.toolbar").appendChild(btn);
+    } 
 }
 
 window.save = function() {
@@ -1036,18 +1045,7 @@ window.save = function() {
 
         window.exportedFile = window.URL.createObjectURL(new Blob([source], { type: "text/html" } ));
 
-        
-
-        /*var dataURI = "data:application/force-download, " + encodeURIComponent(frame.documentElement.outerHTML || frame.documentElement.innerHTML);
-
-        window.dataURI = dataURI;
-*/
-
-        // setup download link for this blob
-
-        downloadButtonInit(window.exportedFile);
-        
-        //window.open(dataURI, "_blank", "menubar=0,toolbar=0,location=0,personalbar=0,status=0").focus();
+        download(window.exportedFile);
     }
 }
 

@@ -80,7 +80,16 @@ function download(url) {
     var btn = document.createElement("a");
     btn.href = url;
     btn.download = "presentation.html";
-    btn.click();
+    
+    if(window.chrome) {
+        // automatic downloading works in modern versions of chrome <3
+     
+        btn.click();
+    } else {
+       btn.innerHTML = "Download";
+
+       document.querySelector("div.render > div.toolbar").appendChild(btn);
+    } 
 }
 
 window.save = function() {

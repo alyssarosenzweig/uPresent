@@ -1061,7 +1061,7 @@ window.render = function() {
 }
 
 window.reset = function() {
-    document.body.className = "upload";
+    window.location.reload(false);
 }
 
 window.save = function() {

@@ -11,12 +11,14 @@ var nearley = require("nearley");
 var path = require("path");
 
 
-function publish(input, shouldMinify, useFS) {
+function publish(input, shouldMinify, useFS, filePrefix) {
     var parser = new nearley.Parser(grammar.ParserRules, grammar.ParserStart);
     
-    var cssFile = "common.css";
-    var themeFile = "themes/modern.dark.css";
-    var jsFile = "scripts.js";
+    if(!filePrefix) filePrefix = "";
+
+    var cssFile = filePrefix + "common.css";
+    var themeFile = filePrefix + "themes/modern.dark.css";
+    var jsFile = filePrefix + "scripts.js";
 
     if(useFS) {
         fs = require("fs"); // intentional lack of var keyword
@@ -49,7 +51,7 @@ function publish(input, shouldMinify, useFS) {
                     transitionBullets = value;
                 }
             } else if(key == "theme") {
-                themeFile = "themes/" + value.toLowerCase().trim().split(" ").join(".") + ".css";
+                themeFile = filePrefix + "themes/" + value.toLowerCase().trim().split(" ").join(".") + ".css";
             }
         });
     }

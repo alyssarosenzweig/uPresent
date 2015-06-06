@@ -8,6 +8,8 @@ var backend = require("../publish_core.js");
 var editor;
 var presentationTitle = "Untitled Presentation";
 
+var minify = require("html-minifier").minify;
+
 // calls the backend to perform the actual publishing
 function publish_presentation(input_markdown) {
     presentationTitle = input_markdown.split("\n")[0];
@@ -130,6 +132,11 @@ function save() {
         });
 
         var source = frame.documentElement.outerHTML || frame.documentElement.innerHTML;
+
+        source = minify(source, {
+            minifyJS: true,
+            minifyCSS: true
+        });
 
         if(window.exportedFile !== null) window.URL.revokeObjectURL(window.exportedFile);
 

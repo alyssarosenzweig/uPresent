@@ -6,8 +6,8 @@
 
 var grammar = require("./uPresent.ne.js");
 var nearley = require("nearley");
-//var beautify_html = require("js-beautify").html;
-//var minify = require("html-minifier").minify;
+var beautify_html = require("js-beautify").html;
+var minify = require("html-minifier").minify;
 var path = require("path");
 
 
@@ -120,16 +120,14 @@ function publish(input, shouldMinify, useFS, filePrefix) {
 
     // depending on the user options, either minify (production) or beautify (development)
 
-/*    if(shouldMinify) {
+    if(shouldMinify) {
         var output = minify(code, {
             minifyJS: true,
             minifyCSS: true
         });
     } else {
         var output = beautify_html(code, {});
-    }*/
-
-    output = code; // minfication / beautifucation disabled for now. TODO: fix
+    }
 
     return output;
 }

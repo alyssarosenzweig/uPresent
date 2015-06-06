@@ -2,9 +2,9 @@
   "name": "upresent",
   "version": "1.0.3",
   "description": "Markdown for presentations; compiled into HTML",
-  "main": "publish.js",
+  "main": "bin/publish.js",
   "bin": {
-    "up": "publish.js"
+    "up": "bin/publish.js"
   },
   "preferGlobal": true,
   "scripts": {

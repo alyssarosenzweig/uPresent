@@ -13,9 +13,9 @@ function publish(input, useFS, filePrefix, embedAll) {
     
     if(!filePrefix) filePrefix = "";
 
-    var cssFile = filePrefix + "common.css";
+    var cssFile = filePrefix + "common/common.css";
     var themeFile = filePrefix + "themes/modern.dark.css";
-    var jsFile = filePrefix + "scripts.js";
+    var jsFile = filePrefix + "common/scripts.js";
 
     if(useFS) {
         fs = require("fs"); // intentional lack of var keyword

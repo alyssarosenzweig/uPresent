@@ -6,9 +6,12 @@
 var backend = require("../publish_core.js");
 
 var editor;
+var presentationTitle = "Untitled Presentation";
 
 // calls the backend to perform the actual publishing
 function publish_presentation(input_markdown) {
+    presentationTitle = input_markdown.split("\n")[0];
+
     return backend(input_markdown, false, false, "../../"); // TODO: enable minification and other goodies with filesystem
 }
 
@@ -64,7 +67,7 @@ function fetchHTTPHref(hreffer, callback) {
 function download(url) {
     var btn = document.createElement("a");
     btn.href = url;
-    btn.download = "presentation.html";
+    btn.download = presentationTitle.trim().toLowerCase().replace(/ /g, "_") + ".html";
     
     if(window.chrome) {
         // automatic downloading works in modern versions of chrome <3

@@ -8,6 +8,8 @@
 var fs = require("fs");
 var backend = require("./publish_core.js");
 var path = require("path");
+var beautify_html = require("js-beautify").html;
+var minify = require("html-minifier").minify;
 
 var opts = require("nomnom")
     .script("up")
@@ -36,9 +38,18 @@ var opts = require("nomnom")
     .parse();
 
 var input = fs.readFileSync(opts.input).toString();
-var output = backend(input, opts.minify, true); // heavy lifting is performed by publish_core
+var output = backend(input, true, "", opts.minify); // heavy lifting is performed by publish_core
 
 // write it out to a file / stdout
+if(opts.minify) {
+    output = minify(output, {
+        minifyJS: true,
+        minifyCSS: true
+    });
+} else {
+   output = beautify_html(output, {});
+}
+
 
 if (opts.output) {
     fs.createWriteStream(opts.output).write(output);

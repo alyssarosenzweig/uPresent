@@ -6,12 +6,9 @@
 
 var grammar = require("./uPresent.ne.js");
 var nearley = require("nearley");
-var beautify_html = require("js-beautify").html;
-var minify = require("html-minifier").minify;
 var path = require("path");
 
-
-function publish(input, shouldMinify, useFS, filePrefix) {
+function publish(input, useFS, filePrefix, embedAll) {
     var parser = new nearley.Parser(grammar.ParserRules, grammar.ParserStart);
     
     if(!filePrefix) filePrefix = "";
@@ -69,7 +66,7 @@ function publish(input, shouldMinify, useFS, filePrefix) {
     code = "<!DOCTYPE html><html><head>" +
         "<title>" + title + "</title>";
 
-    if(shouldMinify && useFS) {
+    if(embedAll && useFS) {
         var theme = "";
 
         // to find the theme file, we look through the theme 'paths'
@@ -106,7 +103,6 @@ function publish(input, shouldMinify, useFS, filePrefix) {
                     (outtheme.join("\n")) + "</style>" +
             "<script>" + fs.readFileSync(path.join(__dirname, jsFile)) + "</script>";
     } else {
-        if(shouldMinify) console.warn("Cannot embed CSS and JS due to nodelessness");
         code +=  '<link rel="stylesheet" href="' + cssFile + '" type="text/css">' +
             '<link rel="stylesheet" href="' + themeFile + '" type="text/css">' +    
                 '<script src="' + jsFile + '" type="text/javascript"></script>';
@@ -115,21 +111,8 @@ function publish(input, shouldMinify, useFS, filePrefix) {
     code += "</head><body>" +
         body +
         "</body></html>";
-        
 
-
-    // depending on the user options, either minify (production) or beautify (development)
-
-    if(shouldMinify) {
-        var output = minify(code, {
-            minifyJS: true,
-            minifyCSS: true
-        });
-    } else {
-        var output = beautify_html(code, {});
-    }
-
-    return output;
+    return code;
 }
 
 module.exports = publish;

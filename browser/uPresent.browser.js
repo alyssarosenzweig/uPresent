@@ -14,7 +14,7 @@ var minify = require("html-minifier").minify;
 function publish_presentation(input_markdown) {
     presentationTitle = input_markdown.split("\n")[0];
 
-    return backend(input_markdown, false, false, "../../"); // TODO: enable minification and other goodies with filesystem
+    return backend(input_markdown, false, "../../", false);
 }
 
 // renders the published presentation to an iframe for previewing the HTML

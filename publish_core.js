@@ -6,25 +6,31 @@
 
 var grammar = require("./uPresent.ne.js");
 var nearley = require("nearley");
-var beautify_html = require("js-beautify").html;
-var minify = require("html-minifier").minify;
 var path = require("path");
 
-var parser = new nearley.Parser(grammar.ParserRules, grammar.ParserStart);
+function publish(input, useFS, filePrefix, embedAll) {
+    var parser = new nearley.Parser(grammar.ParserRules, grammar.ParserStart);
+    
+    if(!filePrefix) filePrefix = "";
 
-function publish(input, shouldMinify, useFS) {
-    var cssFile = "common.css";
-    var themeFile = "themes/modern.dark.css";
-    var jsFile = "scripts.js";
+    var cssFile = filePrefix + "common.css";
+    var themeFile = filePrefix + "themes/modern.dark.css";
+    var jsFile = filePrefix + "scripts.js";
 
     if(useFS) {
         fs = require("fs"); // intentional lack of var keyword
     }
 
+    parser.current = 0;
     parser.feed(input);
 
     var res = parser.results[0];
     var code = "";
+    
+    if(!res) {
+        return undefined;
+    }
+
     var title = res[0][0];
     var transitionBullets = false;
 
@@ -42,7 +48,7 @@ function publish(input, shouldMinify, useFS) {
                     transitionBullets = value;
                 }
             } else if(key == "theme") {
-                themeFile = "themes/" + value.toLowerCase().trim().split(" ").join(".") + ".css";
+                themeFile = filePrefix + "themes/" + value.toLowerCase().trim().split(" ").join(".") + ".css";
             }
         });
     }
@@ -60,7 +66,7 @@ function publish(input, shouldMinify, useFS) {
     code = "<!DOCTYPE html><html><head>" +
         "<title>" + title + "</title>";
 
-    if(shouldMinify && useFS) {
+    if(embedAll && useFS) {
         var theme = "";
 
         // to find the theme file, we look through the theme 'paths'
@@ -97,7 +103,6 @@ function publish(input, shouldMinify, useFS) {
                     (outtheme.join("\n")) + "</style>" +
             "<script>" + fs.readFileSync(path.join(__dirname, jsFile)) + "</script>";
     } else {
-        if(shouldMinify) console.warn("Cannot embed CSS and JS due to nodelessness");
         code +=  '<link rel="stylesheet" href="' + cssFile + '" type="text/css">' +
             '<link rel="stylesheet" href="' + themeFile + '" type="text/css">' +    
                 '<script src="' + jsFile + '" type="text/javascript"></script>';
@@ -106,21 +111,8 @@ function publish(input, shouldMinify, useFS) {
     code += "</head><body>" +
         body +
         "</body></html>";
-        
 
-
-    // depending on the user options, either minify (production) or beautify (development)
-
-    if(shouldMinify) {
-        var output = minify(code, {
-            minifyJS: true,
-            minifyCSS: true
-        });
-    } else {
-        var output = beautify_html(code, {});
-    }
-
-    return output;
+    return code;
 }
 
 module.exports = publish;

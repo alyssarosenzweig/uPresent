@@ -1,4 +1,147 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+/*
+ * browser-version of the publisher
+ * this bit is meant to be compiled to browserify
+ */
+
+var backend = require("../publish_core.js");
+
+var editor;
+
+// calls the backend to perform the actual publishing
+function publish_presentation(input_markdown) {
+    return backend(input_markdown, false, false, "../"); // TODO: enable minification and other goodies with filesystem
+}
+
+// renders the published presentation to an iframe for previewing the HTML
+function render_presentation(input) {
+    var iframe = document.getElementById("presentation").contentWindow.document;
+
+    var output = publish_presentation(input);
+
+    // don't update if there are errors
+
+    if(output) {
+        iframe.open();
+        iframe.write(publish_presentation(input));
+        iframe.close();
+    }
+}
+
+
+
+// polyfill for a map for NodeList's
+// to avoid conversion to an array with is ugly...
+
+function mapNodelistAsync(obj, func, callback) {
+    var arr = [];
+    
+    for(var i = 0; i < obj.length; ++i) {
+        func(obj[i], function(response) {
+            arr.push(response);
+            
+            if(arr.length == obj.length) {
+                callback(arr);
+            }
+        });
+    }
+}
+
+function fetchHTTPHref(hreffer, callback) {
+    var request = new XMLHttpRequest();
+    
+    request.onreadystatechange = function() {
+        if(request.readyState == 4) {
+            callback(request.responseText);
+        }
+    };
+
+    console.log(hreffer);
+
+    request.open("GET", hreffer.href || hreffer.src, true);
+    request.send();
+}
+
+function download(url) {
+    var btn = document.createElement("a");
+    btn.href = url;
+    btn.download = "presentation.html";
+    
+    if(window.chrome) {
+        // automatic downloading works in modern versions of chrome <3
+     
+        btn.click();
+    } else {
+       btn.innerHTML = "Download";
+
+       document.querySelector("div.render > div.toolbar").appendChild(btn);
+    } 
+}
+
+function save() {
+    // to save, we'll already be in render mode
+    // this is useful as this enables us to perform DOM manipulation <3
+    
+    var frame = document.getElementById("presentation").contentWindow.document;
+    
+    // get the stylesheet URLs
+    
+    var styles = frame.getElementsByTagName("link");
+    var scripts = frame.getElementsByTagName("script");
+
+    var stylesheets = [];
+    var scriptcontents = [];
+
+    mapNodelistAsync(styles, fetchHTTPHref, function(out) {
+        stylesheets = out;
+
+        if(scriptcontents.length) saveStage2();
+    });
+
+    mapNodelistAsync(scripts, fetchHTTPHref, function(out) {
+        scriptcontents = out;
+
+        if(stylesheets.length) saveStage2();
+    });
+
+    function saveStage2() {
+        for(var i = 0; i < styles.length; ++i) {
+            styles[i].parentNode.removeChild(styles[i]);
+        }
+
+        for(var i = 0; i < scripts.length; ++i) {
+            scripts[i].parentNode.removeChild(scripts[i]);
+        }
+
+        stylesheets.forEach(function(sheet) {
+            var sheetObject = document.createElement("style");
+            sheetObject.innerHTML = sheet;
+
+            frame.head.appendChild(sheetObject);
+        });
+
+        scriptcontents.forEach(function(code) {
+            var scriptObject = document.createElement("script");
+            scriptObject.innerHTML = code;
+
+            frame.head.appendChild(scriptObject);
+        });
+
+        var source = frame.documentElement.outerHTML || frame.documentElement.innerHTML;
+
+        if(window.exportedFile !== null) window.URL.revokeObjectURL(window.exportedFile);
+
+        window.exportedFile = window.URL.createObjectURL(new Blob([source], { type: "text/html" } ));
+
+        download(window.exportedFile);
+    }
+}
+
+module.exports.save = save;
+module.exports.render_presentation = render_presentation;
+module.exports.publish_presentation = publish_presentation;
+
+},{"../publish_core.js":3}],2:[function(require,module,exports){
 (function () {
 function Rule(name, symbols, postprocess) {
     this.name = name;
@@ -261,7 +404,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 }
 })();
 
-},{}],2:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 (function (process,__dirname){
 /*
  * backend for the uPresent publisher
@@ -402,7 +545,7 @@ function publish(input, shouldMinify, useFS, filePrefix) {
 module.exports = publish;
 
 }).call(this,require('_process'),"/..")
-},{"./uPresent.ne.js":3,"_process":6,"fs":4,"nearley":1,"path":5}],3:[function(require,module,exports){
+},{"./uPresent.ne.js":4,"_process":7,"fs":5,"nearley":2,"path":6}],4:[function(require,module,exports){
 // Generated automatically by nearley
 // http://github.com/Hardmath123/nearley
 (function () {
@@ -573,9 +716,9 @@ if (typeof module !== 'undefined'&& typeof module.exports !== 'undefined') {
 }
 })();
 
-},{}],4:[function(require,module,exports){
-
 },{}],5:[function(require,module,exports){
+
+},{}],6:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -803,7 +946,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require('_process'))
-},{"_process":6}],6:[function(require,module,exports){
+},{"_process":7}],7:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -895,45 +1038,28 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 /*
- * browser-version of the publisher
- * this bit is meant to be compiled to browserify
+ * source code of the browser-based uPresent IDE
+ * used with browserify
+ * this controls the UI of the IDE, as well as a few IDE-specific features like CodeMirror.
+ * however, actual uPresent features are from browser.js
  */
 
-var backend = require("../publish_core.js");
+var uPresent = require("./browser.js");
 
 var editor;
 
-// calls the backend to perform the actual publishing
-function publish_presentation(input_markdown) {
-    return backend(input_markdown, false, false, "../"); // TODO: enable minification and other goodies with filesystem
-}
-
-// renders the published presentation to an iframe for previewing the HTML
-function render_presentation(input) {
-    var iframe = document.getElementById("presentation").contentWindow.document;
-
-    var output = publish_presentation(input);
-
-    // don't update if there are errors
-
-    if(output) {
-        iframe.open();
-        iframe.write(publish_presentation(input));
-        iframe.close();
-    }
-}
-
 // fetches the input markdown from the textarea
+
 function get_input() {
-    return editor.getValue() + "\n"; // newlines are appended to prevent stupid errors
+    return editor.getValue() + "\n"; // a newline is appended to prevent stupid errors
 }
 
 // meat of the actual editor
 
 window.render = function() {
-    render_presentation(get_input());
+    uPresent.render_presentation(get_input());
 
     document.body.className = "render";
 };
@@ -942,111 +1068,8 @@ window.edit = function() {
     document.body.className = "editor";
 }
 
-// polyfill for a map for NodeList's
-// to avoid conversion to an array with is ugly...
-
-function mapNodelistAsync(obj, func, callback) {
-    var arr = [];
-    
-    for(var i = 0; i < obj.length; ++i) {
-        func(obj[i], function(response) {
-            arr.push(response);
-            
-            if(arr.length == obj.length) {
-                callback(arr);
-            }
-        });
-    }
-}
-
-function fetchHTTPHref(hreffer, callback) {
-    var request = new XMLHttpRequest();
-    
-    request.onreadystatechange = function() {
-        if(request.readyState == 4) {
-            callback(request.responseText);
-        }
-    };
-
-    console.log(hreffer);
-
-    request.open("GET", hreffer.href || hreffer.src, true);
-    request.send();
-}
-
-function download(url) {
-    var btn = document.createElement("a");
-    btn.href = url;
-    btn.download = "presentation.html";
-    
-    if(window.chrome) {
-        // automatic downloading works in modern versions of chrome <3
-     
-        btn.click();
-    } else {
-       btn.innerHTML = "Download";
-
-       document.querySelector("div.render > div.toolbar").appendChild(btn);
-    } 
-}
-
 window.save = function() {
-    // to save, we'll already be in render mode
-    // this is useful as this enables us to perform DOM manipulation <3
-    
-    var frame = document.getElementById("presentation").contentWindow.document;
-    
-    // get the stylesheet URLs
-    
-    var styles = frame.getElementsByTagName("link");
-    var scripts = frame.getElementsByTagName("script");
-
-    var stylesheets = [];
-    var scriptcontents = [];
-
-    mapNodelistAsync(styles, fetchHTTPHref, function(out) {
-        stylesheets = out;
-
-        if(scriptcontents.length) saveStage2();
-    });
-
-    mapNodelistAsync(scripts, fetchHTTPHref, function(out) {
-        scriptcontents = out;
-
-        if(stylesheets.length) saveStage2();
-    });
-
-    function saveStage2() {
-        for(var i = 0; i < styles.length; ++i) {
-            styles[i].parentNode.removeChild(styles[i]);
-        }
-
-        for(var i = 0; i < scripts.length; ++i) {
-            scripts[i].parentNode.removeChild(scripts[i]);
-        }
-
-        stylesheets.forEach(function(sheet) {
-            var sheetObject = document.createElement("style");
-            sheetObject.innerHTML = sheet;
-
-            frame.head.appendChild(sheetObject);
-        });
-
-        scriptcontents.forEach(function(code) {
-            var scriptObject = document.createElement("script");
-            scriptObject.innerHTML = code;
-
-            frame.head.appendChild(scriptObject);
-        });
-
-        var source = frame.documentElement.outerHTML || frame.documentElement.innerHTML;
-
-        if(window.exportedFile !== null) window.URL.revokeObjectURL(window.exportedFile);
-
-        window.exportedFile = window.URL.createObjectURL(new Blob([source], { type: "text/html" } ));
-
-        download(window.exportedFile);
-    }
+    uPresent.save();
 }
 
 window.addEventListener("load", function() {
@@ -1055,4 +1078,4 @@ window.addEventListener("load", function() {
     });
 });
 
-},{"../publish_core.js":2}]},{},[7]);
+},{"./browser.js":1}]},{},[8]);

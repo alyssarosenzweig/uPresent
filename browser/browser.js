@@ -27,22 +27,7 @@ function render_presentation(input) {
     }
 }
 
-// fetches the input markdown from the textarea
-function get_input() {
-    return editor.getValue() + "\n"; // newlines are appended to prevent stupid errors
-}
 
-// meat of the actual editor
-
-window.render = function() {
-    render_presentation(get_input());
-
-    document.body.className = "render";
-};
-
-window.edit = function() {
-    document.body.className = "editor";
-}
 
 // polyfill for a map for NodeList's
 // to avoid conversion to an array with is ugly...
@@ -92,7 +77,7 @@ function download(url) {
     } 
 }
 
-window.save = function() {
+function save() {
     // to save, we'll already be in render mode
     // this is useful as this enables us to perform DOM manipulation <3
     
@@ -151,8 +136,6 @@ window.save = function() {
     }
 }
 
-window.addEventListener("load", function() {
-    editor = CodeMirror.fromTextArea(document.getElementById("text"), {
-        mode: "markdown"
-    });
-});
+module.exports.save = save;
+module.exports.render_presentation = render_presentation;
+module.exports.publish_presentation = publish_presentation;

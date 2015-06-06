@@ -942,12 +942,95 @@ window.edit = function() {
     document.body.className = "editor";
 }
 
-window.save = function() {
-    var source = publish_presentation(get_input());
-    
-    var dataURI = "data:application/force-download, " + encodeURIComponent(source);
+// polyfill for a map for NodeList's
+// to avoid conversion to an array with is ugly...
 
-    window.open(dataURI, "_blank", "menubar=0,toolbar=0,location=0,personalbar=0,status=0").focus();
+function mapNodelistAsync(obj, func, callback) {
+    var arr = [];
+    
+    for(var i = 0; i < obj.length; ++i) {
+        func(obj[i], function(response) {
+            arr.push(response);
+            
+            if(arr.length == obj.length) {
+                callback(arr);
+            }
+        });
+    }
+}
+
+function fetchHTTPHref(hreffer, callback) {
+    var request = new XMLHttpRequest();
+    
+    request.onreadystatechange = function() {
+        if(request.readyState == 4) {
+            callback(request.responseText);
+        }
+    };
+
+    console.log(hreffer);
+
+    request.open("GET", hreffer.href || hreffer.src, true);
+    request.send();
+}
+
+window.save = function() {
+    // to save, we'll already be in render mode
+    // this is useful as this enables us to perform DOM manipulation <3
+    
+    var frame = document.getElementById("presentation").contentWindow.document;
+    
+    // get the stylesheet URLs
+    
+    var styles = frame.getElementsByTagName("link");
+    var scripts = frame.getElementsByTagName("script");
+
+    var stylesheets = [];
+    var scriptcontents = [];
+
+    mapNodelistAsync(styles, fetchHTTPHref, function(out) {
+        stylesheets = out;
+
+        if(scriptcontents.length) saveStage2();
+    });
+
+    mapNodelistAsync(scripts, fetchHTTPHref, function(out) {
+        scriptcontents = out;
+
+        if(stylesheets.length) saveStage2();
+    });
+
+    function saveStage2() {
+        for(var i = 0; i < styles.length; ++i) {
+            styles[i].parentNode.removeChild(styles[i]);
+        }
+
+        for(var i = 0; i < scripts.length; ++i) {
+            scripts[i].parentNode.removeChild(scripts[i]);
+        }
+
+        stylesheets.forEach(function(sheet) {
+            var sheetObject = document.createElement("style");
+            sheetObject.innerHTML = sheet;
+
+            frame.head.appendChild(sheetObject);
+        });
+
+        scriptcontents.forEach(function(code) {
+            var scriptObject = document.createElement("script");
+            scriptObject.innerHTML = code;
+
+            frame.head.appendChild(scriptObject);
+        });
+
+        var dataURI = "data:application/force-download, " + encodeURIComponent(frame.documentElement.outerHTML || frame.documentElement.innerHTML);
+
+        console.log(dataURI);
+       
+        window.dataURI = dataURI;
+
+        window.open(dataURI, "_blank", "menubar=0,toolbar=0,location=0,personalbar=0,status=0").focus();
+    }
 }
 
 window.addEventListener("load", function() {

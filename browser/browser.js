@@ -29,19 +29,23 @@ function render_presentation(input) {
 
 // fetches the input markdown from the textarea
 function get_input() {
-    return editor.getValue() + "\n\n"; // newlines are appended to prevent stupid errors
+    return editor.getValue() + "\n"; // newlines are appended to prevent stupid errors
 }
 
 // meat of the actual editor
 
 window.render = function() {
     render_presentation(get_input());
+
+    document.body.className = "render";
 };
+
+window.edit = function() {
+    document.body.className = "editor";
+}
 
 window.addEventListener("load", function() {
     editor = CodeMirror.fromTextArea(document.getElementById("text"), {
         mode: "markdown"
     });
-
-    editor.on("change", render);
 });

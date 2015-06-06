@@ -27,6 +27,11 @@ function publish(input, shouldMinify, useFS) {
 
     var res = parser.results[0];
     var code = "";
+    
+    if(!res) {
+        return undefined;
+    }
+
     var title = res[0][0];
     var transitionBullets = false;
 

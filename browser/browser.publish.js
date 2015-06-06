@@ -292,6 +292,11 @@ function publish(input, shouldMinify, useFS) {
 
     var res = parser.results[0];
     var code = "";
+    
+    if(!res) {
+        return undefined;
+    }
+
     var title = res[0][0];
     var transitionBullets = false;
 
@@ -402,73 +407,59 @@ module.exports = publish;
 function id(x) {return x[0]; }
 var grammar = {
     ParserRules: [
-    {"name": "main", "symbols": ["config", "_", "presentation", "_"], "postprocess":  function(d) {
+    {"name": "main", "symbols": ["config", "_", "presentation"], "postprocess":  function(d) {
 	return [d[0], d[2]];
 } },
     {"name": "config", "symbols": ["pphrase"]},
     {"name": "config", "symbols": ["pphrase", "_", " ebnf$1", /[\s]/]},
-    {"name": "configOption", "symbols": [{"literal":"+"}, "pphrase", {"literal":"\n"}], "postprocess":  function(d) { return [d[0], true] } },
-    {"name": "configOption", "symbols": [{"literal":"-"}, "pphrase", {"literal":"\n"}], "postprocess":  function(d) { return [d[0], false] } },
+    {"name": "configOption", "symbols": [{"literal":"+"}, "pphrase", {"literal":"\n"}], "postprocess":  function(d) { return [d[1], true] } },
+    {"name": "configOption", "symbols": [{"literal":"-"}, "pphrase", {"literal":"\n"}], "postprocess":  function(d) { return [d[1], false] } },
     {"name": " string$2", "symbols": [{"literal":":"}, {"literal":" "}], "postprocess": function joiner(d) {
         return d.join('');
     }},
     {"name": "configOption", "symbols": ["pphrase", " string$2", "pphrase", {"literal":"\n"}], "postprocess":  function(d) { return [d[0], d[2]] } },
-    {"name": "presentation", "symbols": ["slide"]},
-    {"name": "presentation", "symbols": ["presentation", "slide"], "postprocess":  function(d) {
-			return d[0].concat([d[1]]);
-		} },
-    {"name": "slide", "symbols": ["slidemarker", {"literal":"\n"}, "content", "_"], "postprocess": 
-	function(d) {
-		return d[2]
-	} },
-    {"name": "slidemarker", "symbols": [{"literal":"-"}], "postprocess":  function() { return null } },
-    {"name": "slidemarker", "symbols": ["slidemarker", {"literal":"-"}], "postprocess":  function() { return null } },
-    {"name": "content", "symbols": ["line"]},
-    {"name": "content", "symbols": ["content", "line"], "postprocess":  function(d) { return d[0] + d[1] } },
-    {"name": "line", "symbols": ["_", "marker", {"literal":"\n"}], "postprocess":  function(d) { return d[1] } },
-    {"name": "line", "symbols": ["_", "lphrase", {"literal":"\n"}], "postprocess":  function(d) { return "<p>" + d[1] + "</p>" } },
-    {"name": "line", "symbols": ["_", "list", {"literal":"\n"}], "postprocess":  function(d) { return "<ul>"+d[1]+"</ul>" } },
+    {"name": "presentation", "symbols": [" ebnf$3"], "postprocess":  function(d) { return [].concat.apply([], d) } },
+    {"name": "slide", "symbols": [" ebnf$4", {"literal":"\n"}, "content"], "postprocess":  function(d) { return d[2] } },
+    {"name": "content", "symbols": [" ebnf$5"], "postprocess":  function(d) { return d[0].join(""); } },
+    {"name": "line", "symbols": ["marker", {"literal":"\n"}], "postprocess":  function(d) { return d[0] } },
+    {"name": "line", "symbols": ["lphrase", {"literal":"\n"}], "postprocess":  function(d) { return "<p>" + d[0] + "</p>" } },
+    {"name": "line", "symbols": [" ebnf$6", {"literal":"\n"}], "postprocess":  function(d) { return "<ul>"+(d[0].join(""))+"</ul>" } },
+    {"name": "line", "symbols": [{"literal":"\n"}], "postprocess":  function(d) { return ""; } },
     {"name": "italics", "symbols": [{"literal":"_"}, "lphrase", {"literal":"_"}], "postprocess":  function(d) { return "<em>" + d[1] + "</em>" } },
-    {"name": " string$3", "symbols": [{"literal":"*"}, {"literal":"*"}], "postprocess": function joiner(d) {
+    {"name": " string$7", "symbols": [{"literal":"*"}, {"literal":"*"}], "postprocess": function joiner(d) {
         return d.join('');
     }},
-    {"name": " string$4", "symbols": [{"literal":"*"}, {"literal":"*"}], "postprocess": function joiner(d) {
+    {"name": " string$8", "symbols": [{"literal":"*"}, {"literal":"*"}], "postprocess": function joiner(d) {
         return d.join('');
     }},
-    {"name": "bold", "symbols": [" string$3", "lphrase", " string$4"], "postprocess":  function(d) { return "<strong>" + d[1] + "</strong>" } },
-    {"name": " string$5", "symbols": [{"literal":"!"}, {"literal":"["}], "postprocess": function joiner(d) {
+    {"name": "bold", "symbols": [" string$7", "lphrase", " string$8"], "postprocess":  function(d) { return "<strong>" + d[1] + "</strong>" } },
+    {"name": " string$9", "symbols": [{"literal":"!"}, {"literal":"["}], "postprocess": function joiner(d) {
         return d.join('');
     }},
-    {"name": " string$6", "symbols": [{"literal":"]"}, {"literal":"("}], "postprocess": function joiner(d) {
+    {"name": " string$10", "symbols": [{"literal":"]"}, {"literal":"("}], "postprocess": function joiner(d) {
         return d.join('');
     }},
-    {"name": "image", "symbols": [" string$5", "pphrase", " string$6", "path", {"literal":")"}], "postprocess":  function(d) { return '<img alt="' + d[1] + '" src="' + d[3] + '" />' } },
-    {"name": " string$7", "symbols": [{"literal":"h"}, {"literal":"t"}, {"literal":"t"}, {"literal":"p"}], "postprocess": function joiner(d) {
+    {"name": "image", "symbols": [" string$9", "pphrase", " string$10", "path", {"literal":")"}], "postprocess":  function(d) { return '<img alt="' + d[1] + '" src="' + d[3] + '" />' } },
+    {"name": " string$11", "symbols": [{"literal":"h"}, {"literal":"t"}, {"literal":"t"}, {"literal":"p"}], "postprocess": function joiner(d) {
         return d.join('');
     }},
-    {"name": "linkprotocol", "symbols": [" string$7"]},
-    {"name": " string$8", "symbols": [{"literal":"h"}, {"literal":"t"}, {"literal":"t"}, {"literal":"p"}, {"literal":"s"}], "postprocess": function joiner(d) {
+    {"name": "linkprotocol", "symbols": [" string$11"]},
+    {"name": " string$12", "symbols": [{"literal":"h"}, {"literal":"t"}, {"literal":"t"}, {"literal":"p"}, {"literal":"s"}], "postprocess": function joiner(d) {
         return d.join('');
     }},
-    {"name": "linkprotocol", "symbols": [" string$8"]},
-    {"name": "domain", "symbols": [" ebnf$9"], "postprocess":  function(d) { return d[0].join(""); } },
-    {"name": " string$10", "symbols": [{"literal":":"}, {"literal":"/"}, {"literal":"/"}], "postprocess": function joiner(d) {
+    {"name": "linkprotocol", "symbols": [" string$12"]},
+    {"name": "domain", "symbols": [" ebnf$13"], "postprocess":  function(d) { return d[0].join(""); } },
+    {"name": " string$14", "symbols": [{"literal":":"}, {"literal":"/"}, {"literal":"/"}], "postprocess": function joiner(d) {
         return d.join('');
     }},
-    {"name": "rawlink", "symbols": ["linkprotocol", " string$10", "domain"], "postprocess":  function(d) {
-			return "<a href='" + d[0] + d[1] + d[2] + "'>" + d[0] + d[1] + d[2] + "</a>";
-		} },
-    {"name": " string$11", "symbols": [{"literal":":"}, {"literal":"/"}, {"literal":"/"}], "postprocess": function joiner(d) {
-        return d.join('');
-    }},
-    {"name": "rawlink", "symbols": ["linkprotocol", " string$11", "domain", {"literal":"/"}, " ebnf$12"], "postprocess":  function(d) {
+    {"name": "rawlink", "symbols": ["linkprotocol", " string$14", "domain", {"literal":"/"}, " ebnf$15"], "postprocess":  function(d) {
 			return "<a href='" + d[0] + d[1] + d[2] + d[3] + d[4].join("") + "'>" + d[0] + d[1] + d[2] + d[3] + d[4].join("") + "</a>";
 		} },
-    {"name": " string$13", "symbols": [{"literal":"]"}, {"literal":"("}], "postprocess": function joiner(d) {
+    {"name": " string$16", "symbols": [{"literal":"]"}, {"literal":"("}], "postprocess": function joiner(d) {
         return d.join('');
     }},
-    {"name": "namelink", "symbols": [{"literal":"["}, "pphrase", " string$13", "path", {"literal":")"}], "postprocess":  function(d) { return '<a href="' + d[3] + '">' + d[1] + "</a>"; } },
-    {"name": "ln", "symbols": ["nophrase", " ebnf$14"], "postprocess":  
+    {"name": "namelink", "symbols": [{"literal":"["}, "pphrase", " string$16", "path", {"literal":")"}], "postprocess":  function(d) { return '<a href="' + d[3] + '">' + d[1] + "</a>"; } },
+    {"name": "ln", "symbols": ["nophrase", " ebnf$17"], "postprocess":  
 			function(d, blah, fail) {
 				d[1] = d[1].join("");
 			       	if(d[1].indexOf("http://") > -1 || d[1].indexOf("https://") > -1) { 
@@ -487,71 +478,87 @@ var grammar = {
     {"name": "nphrase", "symbols": ["lphrase", "image"], "postprocess":  function(d) { return d[0]+d[1] } },
     {"name": "nphrase", "symbols": ["lphrase", /[\-]/], "postprocess":  function(d) { return d[0]+d[1] } },
     {"name": "nphrase", "symbols": ["lphrase", /[!]/, /[^\[]/], "postprocess":  function(d) { return d[0]+d[1]+d[2] } },
-    {"name": "nphrase", "symbols": ["bphrase", "rawlink"], "postprocess":  function(d) { return d[0]+d[1] } },
+    {"name": "nphrase", "symbols": ["bphrase", "rawlink", /[\s]/], "postprocess":  function(d) { return d[0]+d[1] } },
     {"name": "nphrase", "symbols": ["bphrase", "namelink"], "postprocess":  function(d) { return d[0]+d[1] } },
     {"name": "nphrase", "symbols": ["lphrase", {"literal":"["}], "postprocess":  function(d) { return d[0]+d[1] } },
     {"name": "bphrase", "symbols": ["lphrase"], "postprocess":  id },
     {"name": "bphrase", "symbols": ["_"], "postprocess":  function() { return "" } },
-    {"name": "pphrase", "symbols": ["pcharacter"], "postprocess":  id },
-    {"name": "pphrase", "symbols": ["pphrase", "pcharacter"], "postprocess":  function(d) { return d[0]+d[1] } },
-    {"name": "pcharacter", "symbols": [/[ A-Za-z0-9!@#$%^&*()_+\-\=}{\[\]"':;?/>.<,]/]},
-    {"name": "linecharacter", "symbols": [/[A-Za-z0-9 @$%^&()+=.,<>/?'";:\|\]\{\}]/]},
-    {"name": " string$15", "symbols": [{"literal":"#"}, {"literal":" "}], "postprocess": function joiner(d) {
+    {"name": "pphrase", "symbols": [" ebnf$18"], "postprocess":  function(d) { return d[0].join("") } },
+    {"name": "linecharacter", "symbols": [/[A-Za-z0-9 @$%^&()+=.,<>/?'";:\|\]\{\}\(\)]/]},
+    {"name": " string$19", "symbols": [{"literal":"#"}, {"literal":" "}], "postprocess": function joiner(d) {
         return d.join('');
     }},
-    {"name": "marker", "symbols": [" string$15", "lphrase", {"literal":"\n"}], "postprocess":  function(d) {
+    {"name": "marker", "symbols": [" string$19", "lphrase", {"literal":"\n"}], "postprocess":  function(d) {
 		return "<h1>" +
 			d[1] +
 			"</h1>";
 		} },
     {"name": "marker", "symbols": ["image", "bphrase"], "postprocess":  function(d) {
-		return "<p>" + d[0] + d[1] + "</p>";
-	} },
-    {"name": " string$16", "symbols": [{"literal":"["}, {"literal":"h"}, {"literal":"a"}, {"literal":"n"}, {"literal":"g"}, {"literal":"i"}, {"literal":"n"}, {"literal":"g"}, {"literal":"]"}, {"literal":" "}], "postprocess": function joiner(d) {
+            return "<p>" + d[0] + d[1] + "</p>";
+        } },
+    {"name": " string$20", "symbols": [{"literal":"["}, {"literal":"l"}, {"literal":"i"}, {"literal":"n"}, {"literal":"e"}, {"literal":"b"}, {"literal":"r"}, {"literal":"e"}, {"literal":"a"}, {"literal":"k"}, {"literal":"]"}, {"literal":"\n"}], "postprocess": function joiner(d) {
         return d.join('');
     }},
-    {"name": "marker", "symbols": [" string$16", "lphrase"], "postprocess":  function(d) {
-		return "<div class='hanging'>" + d[1] + "</div>";
-	} },
-    {"name": " string$17", "symbols": [{"literal":"["}, {"literal":"l"}, {"literal":"i"}, {"literal":"n"}, {"literal":"e"}, {"literal":"b"}, {"literal":"r"}, {"literal":"e"}, {"literal":"a"}, {"literal":"k"}, {"literal":"]"}], "postprocess": function joiner(d) {
+    {"name": "marker", "symbols": [" string$20"], "postprocess":  function(d) { return "<br/>"; } },
+    {"name": " string$21", "symbols": [{"literal":"]"}, {"literal":" "}], "postprocess": function joiner(d) {
         return d.join('');
     }},
-    {"name": "marker", "symbols": [" string$17"], "postprocess":  function(d) {
-		return "<br/>";
-	} },
-    {"name": "pathchar", "symbols": [/[A-Za-z0-9:\/!@#$%^&*()_+=\-\'\.]/], "postprocess":  id },
-    {"name": "path", "symbols": ["pathchar"], "postprocess":  id },
-    {"name": "path", "symbols": ["path", "pathchar"], "postprocess":  function(d) { return d[0]+d[1] } },
-    {"name": " string$18", "symbols": [{"literal":"~"}, {"literal":" "}], "postprocess": function joiner(d) {
+    {"name": "marker", "symbols": [{"literal":"["}, "pphrase", " string$21", "lphrase", {"literal":"\n"}], "postprocess":  function(d) {
+            return "<div class='" + d[1] + "'>" + d[3] + "</div>";
+        } },
+    {"name": "path", "symbols": [" ebnf$22"], "postprocess":  function(d) { return d[0].join("") } },
+    {"name": " string$23", "symbols": [{"literal":"~"}, {"literal":" "}], "postprocess": function joiner(d) {
         return d.join('');
     }},
-    {"name": "listnode", "symbols": [" string$18", "lphrase", {"literal":"\n"}], "postprocess":  function(d) {
+    {"name": "listnode", "symbols": [" string$23", "lphrase", {"literal":"\n"}], "postprocess":  function(d) {
 		return "<li>" + d[1] + "</li>";
 	} },
-    {"name": " string$19", "symbols": [{"literal":"~"}, {"literal":"~"}, {"literal":" "}], "postprocess": function joiner(d) {
+    {"name": " string$24", "symbols": [{"literal":"~"}, {"literal":"~"}, {"literal":" "}], "postprocess": function joiner(d) {
         return d.join('');
     }},
-    {"name": "listnode", "symbols": ["_", " string$19", "lphrase", {"literal":"\n"}], "postprocess":  function(d) {
+    {"name": "listnode", "symbols": ["_", " string$24", "lphrase", {"literal":"\n"}], "postprocess":  function(d) {
 		return "<li class='alt'>" + d[2] + "</li>"
 	} },
-    {"name": "list", "symbols": ["listnode"], "postprocess":  id },
-    {"name": "list", "symbols": ["list", "listnode"], "postprocess":  function(d) { return d[0]+d[1] } },
     {"name": "_", "symbols": [], "postprocess":  function(){ return null } },
     {"name": "_", "symbols": [/[\s]/, "_"], "postprocess":  function() { return null } },
     {"name": " ebnf$1", "symbols": ["configOption"]},
     {"name": " ebnf$1", "symbols": ["configOption", " ebnf$1"], "postprocess": function (d) {
                     return [d[0]].concat(d[1]);
                 }},
-    {"name": " ebnf$9", "symbols": [/[A-Za-z\.]/]},
-    {"name": " ebnf$9", "symbols": [/[A-Za-z\.]/, " ebnf$9"], "postprocess": function (d) {
+    {"name": " ebnf$3", "symbols": ["slide"]},
+    {"name": " ebnf$3", "symbols": ["slide", " ebnf$3"], "postprocess": function (d) {
                     return [d[0]].concat(d[1]);
                 }},
-    {"name": " ebnf$12", "symbols": [/[^ \n]/]},
-    {"name": " ebnf$12", "symbols": [/[^ \n]/, " ebnf$12"], "postprocess": function (d) {
+    {"name": " ebnf$4", "symbols": [{"literal":"-"}]},
+    {"name": " ebnf$4", "symbols": [{"literal":"-"}, " ebnf$4"], "postprocess": function (d) {
                     return [d[0]].concat(d[1]);
                 }},
-    {"name": " ebnf$14", "symbols": ["linecharacter"]},
-    {"name": " ebnf$14", "symbols": ["linecharacter", " ebnf$14"], "postprocess": function (d) {
+    {"name": " ebnf$5", "symbols": ["line"]},
+    {"name": " ebnf$5", "symbols": ["line", " ebnf$5"], "postprocess": function (d) {
+                    return [d[0]].concat(d[1]);
+                }},
+    {"name": " ebnf$6", "symbols": ["listnode"]},
+    {"name": " ebnf$6", "symbols": ["listnode", " ebnf$6"], "postprocess": function (d) {
+                    return [d[0]].concat(d[1]);
+                }},
+    {"name": " ebnf$13", "symbols": [/[A-Za-z\.]/]},
+    {"name": " ebnf$13", "symbols": [/[A-Za-z\.]/, " ebnf$13"], "postprocess": function (d) {
+                    return [d[0]].concat(d[1]);
+                }},
+    {"name": " ebnf$15", "symbols": []},
+    {"name": " ebnf$15", "symbols": [/[^ \n\t]/, " ebnf$15"], "postprocess": function (d) {
+                    return [d[0]].concat(d[1]);
+                }},
+    {"name": " ebnf$17", "symbols": ["linecharacter"]},
+    {"name": " ebnf$17", "symbols": ["linecharacter", " ebnf$17"], "postprocess": function (d) {
+                    return [d[0]].concat(d[1]);
+                }},
+    {"name": " ebnf$18", "symbols": [/[ A-Za-z0-9!@#$%^&*()_+\-\=}{\[\]"':;?/>.<,i]/]},
+    {"name": " ebnf$18", "symbols": [/[ A-Za-z0-9!@#$%^&*()_+\-\=}{\[\]"':;?/>.<,i]/, " ebnf$18"], "postprocess": function (d) {
+                    return [d[0]].concat(d[1]);
+                }},
+    {"name": " ebnf$22", "symbols": [/[A-Za-z0-9:\/!@#$%^&*()_+=\-\'\.\(\)]/]},
+    {"name": " ebnf$22", "symbols": [/[A-Za-z0-9:\/!@#$%^&*()_+=\-\'\.\(\)]/, " ebnf$22"], "postprocess": function (d) {
                     return [d[0]].concat(d[1]);
                 }}
 ]
@@ -918,22 +925,25 @@ function render_presentation(input) {
 
 // fetches the input markdown from the textarea
 function get_input() {
-    return editor.getValue() + "\n\n"; // newlines are appended to prevent stupid errors
+    return editor.getValue() + "\n"; // newlines are appended to prevent stupid errors
 }
 
 // meat of the actual editor
 
 window.render = function() {
-    console.log(get_input());
     render_presentation(get_input());
+
+    document.body.className = "render";
 };
+
+window.edit = function() {
+    document.body.className = "editor";
+}
 
 window.addEventListener("load", function() {
     editor = CodeMirror.fromTextArea(document.getElementById("text"), {
         mode: "markdown"
     });
-
-    editor.on("change", render);
 });
 
 },{"../publish_core.js":2}]},{},[7]);

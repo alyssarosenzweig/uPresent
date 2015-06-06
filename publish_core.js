@@ -4,7 +4,7 @@
  * the main publish.js calls this internally
  */
 
-var grammar = require("./uPresent.ne.js");
+var grammar = require("./uPresent_ne.js");
 var nearley = require("nearley");
 var path = require("path");
 

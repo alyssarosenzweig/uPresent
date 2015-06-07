@@ -5,7 +5,7 @@
 
 µPresent (alternatively spelled uPresent), pronounced "micro present", is a markdown flavor for writing presentations; µPresent presentations are written in a concise, intuitive syntax and are compiled into beautiful, lightweight HTML.
 
-µPresent compiles [this](https://github.com/bobbybee/uPresent/blob/master/test.up) to [this](http://backtick.town/~alyssa/test.html#slide0).
+µPresent compiles [this](https://github.com/bobbybee/uPresent/blob/master/test/test.up) to [this](http://upresent.js.org/test/test.html).
 
 Usage
 =============

@@ -49,11 +49,15 @@ ln -> nophrase linecharacter:+ {%
 lphrase -> ln {% id %}
 	|  nphrase {% id %}
 
+lophrase -> ln {% id %}
+          | nphrase {% id %}
+          | _ {% function(d) { return "" } %}
+
 nophrase -> nphrase {% id %} | _ {% function() { return "" } %}
 
 nphrase -> lphrase [#] {% function(d) { return d[0]+d[1] } %}
-		| lphrase italics {% function(d) { return d[0]+d[1] } %}
-		| lphrase bold {% function(d) { return d[0]+d[1] } %}
+		| lophrase italics {% function(d) { return d[0]+d[1] } %}
+		| lophrase bold {% function(d) { return d[0]+d[1] } %}
 		| lphrase image {% function(d) { return d[0]+d[1] } %}
 		| lphrase [\-] {% function(d) { return d[0]+d[1] } %}
 		| lphrase [!] [^\[] {% function(d) { return d[0]+d[1]+d[2] } %}

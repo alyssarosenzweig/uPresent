@@ -7,6 +7,9 @@
 
 µPresent compiles [this](https://github.com/bobbybee/uPresent/blob/master/test/test.up) to [this](http://upresent.js.org/test/test.html).
 
+![Sample Presentation](http://upresent.js.org/www/img/screenshot.png)
+        
+
 Usage
 =============
 

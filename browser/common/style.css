@@ -1,0 +1,69 @@
+@import url(http://fonts.googleapis.com/css?family=Roboto);
+    
+body {
+    overflow: hidden;
+}
+
+body.editor > .editor, body.editor > div.upload {
+    display: block;
+    
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+
+}
+
+.CodeMirror, div.upload {
+    position: absolute;
+    top: 4%;
+    margin: 2% 2% 2% 2%;
+}
+
+body.render > .render {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0%;
+    width: 100%;
+    height: 100%; 
+}
+
+body.editor > .render, body.upload > .render, body.render > .editor, body.render > .upload { 
+    display: none;
+}
+
+div.toolbar {
+    position: absolute;
+    width: 100%;
+    height: 3%;
+    left: 0%;
+    top: 0%;
+    padding: 0.5% 0% 0.5% 1%;
+    z-index: 10;
+    overflow: hidden;
+    background-color: #EEE;
+}
+
+div.toolbar button {
+    background-color: #EEE;
+    outline: 0;
+    border: 0;
+}
+
+div.toolbar button, div.toolbar a {
+    text-decoration: none;
+    font-size: 130%;
+    font-family: Roboto, sans-serif;
+    color: black;
+}
+
+iframe {
+    position: absolute;
+    width: 100%;
+    height: 96%;
+    top: 4%;
+    left: 0;
+}
+
